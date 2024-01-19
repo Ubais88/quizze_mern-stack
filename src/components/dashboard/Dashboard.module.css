@@ -1,0 +1,127 @@
+.dashboardContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* gap: 1.3rem; */
+  justify-content: space-evenly;
+  width: 100%;
+  background-color: #ededed;
+  box-sizing: border-box;
+  padding: 3rem 3rem 0 3rem;
+}
+
+.boxes {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 20vw;
+  height: 20vh;
+  background-color: #ffffff;
+  border-radius: 0.6rem;
+  padding: 0.6rem;
+}
+
+.boxTitle {
+  font-family: Poppins;
+  font-size: 3.3rem;
+  font-weight: 600;
+  margin: 0;
+  margin-bottom: -10px;
+}
+
+.boxSubtitle {
+  font-family: Poppins;
+  font-size: 1.7rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.colorBox1 {
+  color: #ff5d01;
+}
+.colorBox2 {
+  color: #60b84b;
+}
+.colorBox3 {
+  color: #5076ff;
+}
+
+/* trending section */
+.trendingSection {
+  width: 100%;
+  margin: 2rem 0 0 4rem;
+}
+
+.trendingTitle {
+  font-family: Poppins;
+  font-size: 2rem;
+  font-weight: 600;
+  margin: 0;
+  margin-bottom: 1rem;
+}
+
+.trendingBoxes {
+  display: grid;
+  grid-template-rows: repeat(4, 1fr);
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  padding: 1rem 1rem 0 1rem;
+}
+
+.trendingBox {
+  width: 13vw;
+  height: 8vh;
+  background-color: #ffffff;
+  border-radius: 0.3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+}
+
+.quizInfo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+.quizName {
+  font-family: Poppins;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #474444;
+  margin: 0;
+}
+
+.impressionCount {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
+  font-family: Poppins;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #ff5d01;
+  margin: 0;
+}
+
+.quizDateInfo{
+    display: flex;
+    justify-content: flex-start;
+    width: 100%;
+}
+
+.quizDate {
+  font-family: Poppins;
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: #60b84b;
+}

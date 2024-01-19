@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styles from "./LoginForm.module.css";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const LoginForm = () => {
 
@@ -9,7 +10,8 @@ const LoginForm = () => {
     password:""
   })
   const [errors, setErrors] = useState({});
-  
+  const navigate = useNavigate()
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setLoginFormData({
@@ -45,6 +47,7 @@ const LoginForm = () => {
 
     if (isFormValid()) {
       toast.success("Login success!");
+      navigate('/dashboard');
     }
   };
 

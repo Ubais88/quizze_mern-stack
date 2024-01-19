@@ -1,16 +1,17 @@
 import React, { useState } from "react";
 import styles from "./SignupForm.module.css";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
-const SignupForm = () => {
+const SignupForm = ({setLoginFormActive}) => {
   const [signupFormData, setSignupFormData] = useState({
     name: "",
     email: "",
     password: "",
     cPassword: "",
   });
-
   const [errors, setErrors] = useState({});
+  const navigate = useNavigate()
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -59,6 +60,7 @@ const SignupForm = () => {
 
     if (isFormValid()) {
       toast.success("Form submitted successfully!");
+      setLoginFormActive(true);
     }
   };
 

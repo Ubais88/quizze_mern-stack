@@ -10,17 +10,31 @@ const Auth = () => {
     <div className={styles.mainContainer}>
       <div className={styles.container}>
         <div className={styles.header}>
-        <p className={styles.title}>QUIZZIE</p>
-        <div className={styles.buttonContainer}>
-          <div className={`${styles.authButton} ${!isLoginFormActive && styles.activeButton}`} onClick={() => setLoginFormActive(false)}>
-            Sign Up
-          </div>
-          <div className={`${styles.authButton} ${isLoginFormActive && styles.activeButton}`} onClick={() => setLoginFormActive(true)}>
-            Log In
+          <h1 className={styles.title}>QUIZZIE</h1>
+          <div className={styles.buttonContainer}>
+            <div
+              className={`${styles.authButton} ${
+                !isLoginFormActive && styles.activeButton
+              }`}
+              onClick={() => setLoginFormActive(false)}
+            >
+              Sign Up
+            </div>
+            <div
+              className={`${styles.authButton} ${
+                isLoginFormActive && styles.activeButton
+              }`}
+              onClick={() => setLoginFormActive(true)}
+            >
+              Log In
+            </div>
           </div>
         </div>
-        </div>
-        {isLoginFormActive ? <LoginForm /> : <SignupForm />}
+        {isLoginFormActive ? (
+          <LoginForm />
+        ) : (
+          <SignupForm setLoginFormActive={setLoginFormActive} />
+        )}
       </div>
     </div>
   );
