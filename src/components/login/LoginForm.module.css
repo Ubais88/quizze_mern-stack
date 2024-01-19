@@ -1,0 +1,68 @@
+.mainContainer{
+    margin: auto;
+}
+
+.formContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5rem;
+  }
+  
+  .formFields {
+    display: flex;
+    flex-direction: column;
+    gap: 1.4rem;
+  }
+  
+  .fieldContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+  }
+  
+  .paraContainer {
+    width: 15vw;
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  .inputPara,
+  .loginButton {
+    font-family: "Poppins", sans-serif;
+    margin: 0;
+    text-align: right;
+    font-size: 1rem;
+    font-weight: 600;
+  }
+  
+  .inputField {
+    font-family: "Poppins", sans-serif;
+    font-size: 0.8rem;
+    font-weight: 500;
+    background-color: #f4f4f4;
+    border-radius: 0.65rem 0.65rem 0 0;
+    border: 1px solid transparent;
+    outline: none;
+    width: 30vw;
+    padding: 0.5rem 0.5rem;
+    cursor: pointer;
+  }
+  
+  .loginButton {
+    background-color: #a9bcff;
+    padding: 0.6rem 5.5rem;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+  
+    &:hover {
+      background-color: #8ba4fe;
+    }
+  }
+
+  .errorBorder{
+    border: 1px solid #D60000;
+}
+  

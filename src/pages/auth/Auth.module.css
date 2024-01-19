@@ -1,0 +1,59 @@
+.mainContainer{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: auto 2rem;
+    background-color: #F2F2F2;
+    height: 100vh;
+    width: 100vw;
+}
+
+.container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 1rem;
+    gap: 2rem;
+    padding: 1.5rem;
+    width: 80%;
+    height: 70%;
+    background-color: #FFFFFF;
+    box-shadow: 0px 0px 30px 0px #00000026;
+    margin: auto;
+}
+
+.header{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.title{
+    font-family: Jomhuria;
+    font-size: 4.5rem;
+    font-weight: 400;
+    margin: 0;
+    color: #474444;
+}
+
+.buttonContainer{
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    
+    >.activeButton{
+        box-shadow: 0px 0px 30px 0px #0019FF3D;
+    }
+
+    >.authButton{
+        font-family: Poppins;
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: #474444;
+        padding: 0.4rem 5rem;
+        border-radius: 0.6rem;
+        cursor: pointer;
+    }
+}
