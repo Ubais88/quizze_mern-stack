@@ -67,6 +67,7 @@ const LoginForm = () => {
               }`}
               onChange={handleInputChange}
             />
+            
           </div>
 
           <div className={styles.fieldContainer}>

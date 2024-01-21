@@ -1,0 +1,78 @@
+.ShareQuizContainer {
+  position: fixed;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.7);
+  top: 0;
+  left: 0;
+  z-index: 231;
+  box-sizing: border-box;
+  color: #9f9f9f;
+}
+
+.ShareQuizContent {
+  width: 50vw;
+  /* height: 60vh; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  padding: 1rem;
+  border-radius: 0.6rem;
+}
+
+.cross {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.contentSection {
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  padding: 1rem;
+}
+
+.title {
+  color: #474444;
+  font-family: Poppins;
+  font-size: 2.1rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.urlHolder {
+  border-radius: 0.6rem;
+  background-color: #ededed;
+  font-family: Poppins;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #474444;
+  padding: 0.3rem;
+}
+
+.buttonHolder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.shareButton {
+  width: 30%;
+  border-radius: 0.6rem;
+  background-color: #60b84b;
+  color: #fff;
+  border: none;
+  outline: none;
+  padding: 0.5rem 1rem;
+  font-family: Poppins;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+}

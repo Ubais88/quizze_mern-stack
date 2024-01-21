@@ -1,0 +1,102 @@
+.congratsContainer {
+  position: fixed;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: 0;
+  left: 0;
+  z-index: 231;
+  box-sizing: border-box;
+  background-color: #041325;
+}
+
+.congratsModal {
+  display: flex;
+  width: 80vw;
+  height: 75vh;
+  background-color: #ffffff;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  border-radius: 1rem;
+  font-family: "Poppins", sans-serif;
+  box-sizing: border-box;
+}
+
+.image {
+  object-fit: cover;
+  height: 15rem;
+  width: 15rem;
+}
+.text {
+  color: #474444;
+}
+
+.textPolltype {
+  font-family: Poppins;
+  font-size: 4.6rem;
+  font-weight: 700;
+  color: #474444;
+  text-align: center;padding: 4rem;
+}
+
+
+.text,
+.highlightedText {
+  font-family: Poppins;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+
+.congratsScore {
+  display: flex;
+  align-items: center;
+}
+
+.highlightedText {
+  color: #60b84b;
+}
+
+
+@media screen and (min-width: 300px) and (max-width: 480px) {
+
+  .congratsContainer {
+    height: 100vh;
+    width: 100vw;
+    background-color: #ffffff;
+  }
+  
+  .congratsModal {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0rem;
+    gap: 2rem;
+  }
+
+  .text{
+    text-align: center;
+  }
+
+  
+  .textPolltype {
+    font-size: 2.5rem;
+  }
+  
+  
+  .congratsScore {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+
+}

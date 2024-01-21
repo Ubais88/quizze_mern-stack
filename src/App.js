@@ -1,17 +1,39 @@
-import React from 'react'
-import { Route, Routes } from 'react-router-dom'
-import Auth from './pages/auth/Auth'
-import Home from './pages/home/Home'
+import React from "react";
+import { Route, Routes } from "react-router-dom";
+import Auth from "./pages/auth/Auth";
+import Createquiz from "./components/createQuiz/Createquiz";
+import Sidebar from "./components/sidebar/Sidebar";
+import Dashboard from "./components/dashboard/Dashboard";
+import Analytics from "./components/analytics/Analytics";
+import './App.css'
+import QuizModal from "./pages/modal/QuizModal";
+import QuestionAnalysis from "./components/questionsAnalysis/QuestionAnalysis";
+import PlayQuiz from "./pages/playQuiz/PlayQuiz";
 
 const App = () => {
+  
   return (
-    <div>
+    <div style={{ display: "flex" }}>
       <Routes>
-        <Route path='/' element={<Auth/>} />
-        <Route path='/dashboard' element={<Home/>} />
+        <Route path="/" element={<Auth />} />
+        <Route
+          path="/*"
+          element={
+            <div className="homeComponents">
+              <Sidebar />
+              <Routes>
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/analytics" element={<Analytics />} />
+                <Route path="/questionsanalytics" element={<QuestionAnalysis/>} />
+              </Routes>
+            </div>
+          }
+        />
+        <Route path="/playquiz" element={<PlayQuiz/>} />
+        
       </Routes>
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;
