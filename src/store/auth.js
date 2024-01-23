@@ -15,6 +15,12 @@ export const AuthProvider = ({ children }) => {
     localStorage.setItem("token", serverToken);
   };
 
+   // logout - remove token from local storage
+   const LogoutUser = () => {
+    setToken("");
+    return localStorage.removeItem("token");
+  };
+
   // useEffect(() => {
   //   const checkTokenValidity = async () => {
   //     try {
@@ -48,6 +54,7 @@ export const AuthProvider = ({ children }) => {
       value={{
         isLoggedIn,
         storeTokenInLS,
+        LogoutUser,
         authorizationToken,
         BASE_URL,
       }}

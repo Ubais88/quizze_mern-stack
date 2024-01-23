@@ -2,8 +2,10 @@ import React, { useEffect, useState } from "react";
 import styles from "./Sidebar.module.css";
 import { useNavigate } from "react-router-dom";
 import Createquiz from "../createQuiz/Createquiz";
+import { useAuth } from "../../store/auth";
 
 const Sidebar = () => {
+  const { LogoutUser } = useAuth();
   const navigate = useNavigate()
   const [selectedMenuItem, setSelectedMenuItem] = useState("dashboard");
   const [modalOpen , setModalOpen] = useState(false);
@@ -18,10 +20,14 @@ const Sidebar = () => {
     setSelectedMenuItem(menuItem);
   };
 
+const logoutClickHandler = () => {
+  LogoutUser();
+  navigate('/')
+}
+
   useEffect(() => {
     navigate(`/${selectedMenuItem}`);
   },[selectedMenuItem]);
-  
 
   return (
     <div>
@@ -57,7 +63,7 @@ const Sidebar = () => {
 
       <div className={styles.logoutContainer}>
         <div className={styles.divider}></div>
-        <h2 className={styles.logoutText} onClick={() => navigate('/')}>Logout</h2>
+        <h2 className={styles.logoutText} onClick={logoutClickHandler}>Logout</h2>
       </div>
     </div>
     {

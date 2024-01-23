@@ -51,7 +51,6 @@ const Analytics = () => {
     fetchAnalysisData();
   }, []);
 
-
   return (
     <div className={styles.quizAnalyticsPage}>
       {loading ? (
