@@ -29,7 +29,7 @@ const { storeTokenInLS, BASE_URL } = useAuth();
     const newErrors = {};
 
     const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(loginFormData.email);
-    const isPasswordValid = loginFormData.password.length >= 6;
+    const isPasswordValid = loginFormData.password.length >= 5;
 
     if (!isEmailValid) {
       newErrors.email = "Invalid Email";

@@ -1,12 +1,10 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 import Auth from "./pages/auth/Auth";
-import Createquiz from "./components/createQuiz/Createquiz";
 import Sidebar from "./components/sidebar/Sidebar";
 import Dashboard from "./components/dashboard/Dashboard";
 import Analytics from "./components/analytics/Analytics";
 import './App.css'
-import QuizModal from "./pages/modal/QuizModal";
 import QuestionAnalysis from "./components/questionsAnalysis/QuestionAnalysis";
 import PlayQuiz from "./pages/playQuiz/PlayQuiz";
 

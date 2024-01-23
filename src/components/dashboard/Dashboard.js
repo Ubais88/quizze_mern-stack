@@ -1,243 +1,104 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./Dashboard.module.css";
 import EyeIcon from "../../assets/eye.png";
+import { useAuth } from "../../store/auth";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
-  const data = [
-    {
-      id: 1,
-      name: "Quiz 1",
-      impressions: "20",
-      createdAt: "Created on: 04 Sep, 2023",
-    },
-    {
-      id: 2,
-      name: "Quiz 2",
-      impressions: "210",
-      createdAt: "Created on: 24 Sep, 2023",
-    },
-    {
-      id: 3,
-      name: "Quiz 3",
-      impressions: "212",
-      createdAt: "Created on: 04 Sep, 2024",
-    },
-    {
-      id: 4,
-      name: "Quiz 1",
-      impressions: "2320",
-      createdAt: "Created on: 24 Sep, 2023",
-    },
-    {
-      id: 5,
-      name: "Quiz 5",
-      impressions: "4560",
-      createdAt: "Created on: 12 Aug, 2022",
-    },
-  ];
+  const { authorizationToken, BASE_URL } = useAuth();
+  const navigate = useNavigate();
+  const [quizStats, setQuizStats] = useState();
+  const [loading, setLoading] = useState(true);
+
+  const fetchStats = async () => {
+    try {
+      const response = await axios.get(`${BASE_URL}/quiz/getstats`, {
+        headers: {
+          Authorization: authorizationToken,
+        },
+      });
+
+      // console.log("getstats response: ", response);
+
+      if (response.status === 200) {
+        // Successful getstats
+        setQuizStats(response.data);
+        setLoading(false);
+      } else {
+        // Failed getstats
+        const message = response.data.message;
+        toast.error(message);
+        console.log("Invalid credential");
+      }
+    } catch (error) {
+      // Log any errors
+      console.error("stats  error:", error);
+      toast.error(error.response?.data?.message || "Something went wrong", {
+        position: "top-right",
+      });
+    }
+  };
+
+  useEffect(() => {
+    fetchStats();
+  }, []);
 
   return (
     <div className={styles.dashboardContainer}>
-      <div className={styles.boxes}>
-        <div className={`${styles.box} ${styles.colorBox1}`}>
-          <h1 className={styles.boxTitle}>20</h1>
-          <p className={styles.boxSubtitle}>Quiz</p>
-          <p className={styles.boxSubtitle}> Created</p>
-        </div>
-
-        <div className={`${styles.box} ${styles.colorBox2}`}>
-          <h1 className={styles.boxTitle}>200</h1>
-          <p className={styles.boxSubtitle}>Questions </p>
-          <p className={styles.boxSubtitle}> Created</p>
-        </div>
-
-        <div className={`${styles.box} ${styles.colorBox3}`}>
-          <h1 className={styles.boxTitle}>1.4K</h1>
-          <p className={styles.boxSubtitle}>Total </p>
-          <p className={styles.boxSubtitle}> Impressions</p>
-        </div>
-      </div>
-      <div className={styles.trendingSection}>
-        <p className={styles.trendingTitle}>Trending Quizzes</p>
-        <div className={styles.trendingBoxes}>
-
-          <div className={styles.trendingBox}>
-            <div className={styles.quizInfo}>
-              <h3 className={styles.quizName}>Quiz 1</h3>
-                <p className={styles.impressionCount}>
-                  667
-                  <img src={EyeIcon} alt="impression" />
-                </p>
+      {loading ? (
+        <h1>LOading</h1>
+      ) : (
+        <>
+          <div className={styles.boxes}>
+            <div className={`${styles.box} ${styles.colorBox1}`}>
+              <h1 className={styles.boxTitle}>
+                {quizStats.totalQuizzesCreated}
+              </h1>
+              <p className={styles.boxSubtitle}>Quiz</p>
+              <p className={styles.boxSubtitle}> Created</p>
             </div>
-            <div className={styles.quizDateInfo}>
-              <p className={styles.quizDate}>Created on : 04 Sep, 2023</p>
+
+            <div className={`${styles.box} ${styles.colorBox2}`}>
+              <h1 className={styles.boxTitle}>{quizStats.totalQuestions}</h1>
+              <p className={styles.boxSubtitle}>Questions </p>
+              <p className={styles.boxSubtitle}> Created</p>
+            </div>
+
+            <div className={`${styles.box} ${styles.colorBox3}`}>
+              <h1 className={styles.boxTitle}>{quizStats.totalImpressions}</h1>
+              <p className={styles.boxSubtitle}>Total </p>
+              <p className={styles.boxSubtitle}> Impressions</p>
             </div>
           </div>
-
-          <div className={styles.trendingBox}>
-            <div className={styles.quizInfo}>
-              <h3 className={styles.quizName}>Quiz 1</h3>
-              <div className={styles.impressionContainer}>
-                <p className={styles.impressionCount}>
-                  667
-                  <img src={EyeIcon} alt="impression" />
-                </p>
-              </div>
-            </div>
-            <div className={styles.quizDateInfo}>
-              <p className={styles.quizDate}>Created on : 04 Sep, 2023</p>
-            </div>
-          </div>
-
-          <div className={styles.trendingBox}>
-            <div className={styles.quizInfo}>
-              <h3 className={styles.quizName}>Quiz 1</h3>
-              <div className={styles.impressionContainer}>
-                <p className={styles.impressionCount}>
-                  667
-                  <img src={EyeIcon} alt="impression" />
-                </p>
-              </div>
-            </div>
-            <div className={styles.quizDateInfo}>
-              <p className={styles.quizDate}>Created on : 04 Sep, 2023</p>
+          <div className={styles.trendingSection}>
+            <p className={styles.trendingTitle}>Trending Quizzes</p>
+            <div className={styles.trendingBoxes}>
+              {quizStats.trendingQuizzes.length > 0 ? (
+                quizStats.trendingQuizzes.map((quiz, index) => (
+                  <div key={index} className={styles.trendingBox}>
+                    <div className={styles.quizInfo}>
+                      <h3 className={styles.quizName}>{quiz.quizName}</h3>
+                      <p className={styles.impressionCount}>
+                        {quiz.impressions}
+                        <img src={EyeIcon} alt="impression" />
+                      </p>
+                    </div>
+                    <div className={styles.quizDateInfo}>
+                      <p className={styles.quizDate}>
+                        Created on : {quiz.createdOn}
+                      </p>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <h1>No Quiz Found </h1>
+              )}
             </div>
           </div>
-
-          <div className={styles.trendingBox}>
-            <div className={styles.quizInfo}>
-              <h3 className={styles.quizName}>Quiz 1</h3>
-              <div className={styles.impressionContainer}>
-                <p className={styles.impressionCount}>
-                  667
-                  <img src={EyeIcon} alt="impression" />
-                </p>
-              </div>
-            </div>
-            <div className={styles.quizDateInfo}>
-              <p className={styles.quizDate}>Created on : 04 Sep, 2023</p>
-            </div>
-          </div>
-
-          <div className={styles.trendingBox}>
-            <div className={styles.quizInfo}>
-              <h3 className={styles.quizName}>Quiz 1</h3>
-              <div className={styles.impressionContainer}>
-                <p className={styles.impressionCount}>
-                  667
-                  <img src={EyeIcon} alt="impression" />
-                </p>
-              </div>
-            </div>
-            <div className={styles.quizDateInfo}>
-              <p className={styles.quizDate}>Created on : 04 Sep, 2023</p>
-            </div>
-          </div>
-
-          <div className={styles.trendingBox}>
-            <div className={styles.quizInfo}>
-              <h3 className={styles.quizName}>Quiz 1</h3>
-                <p className={styles.impressionCount}>
-                  667
-                  <img src={EyeIcon} alt="impression" />
-                </p>
-            </div>
-            <div className={styles.quizDateInfo}>
-              <p className={styles.quizDate}>Created on : 04 Sep, 2023</p>
-            </div>
-          </div>
-
-          <div className={styles.trendingBox}>
-            <div className={styles.quizInfo}>
-              <h3 className={styles.quizName}>Quiz 1</h3>
-              <div className={styles.impressionContainer}>
-                <p className={styles.impressionCount}>
-                  667
-                  <img src={EyeIcon} alt="impression" />
-                </p>
-              </div>
-            </div>
-            <div className={styles.quizDateInfo}>
-              <p className={styles.quizDate}>Created on : 04 Sep, 2023</p>
-            </div>
-          </div>
-
-          <div className={styles.trendingBox}>
-            <div className={styles.quizInfo}>
-              <h3 className={styles.quizName}>Quiz 1</h3>
-              <div className={styles.impressionContainer}>
-                <p className={styles.impressionCount}>
-                  667
-                  <img src={EyeIcon} alt="impression" />
-                </p>
-              </div>
-            </div>
-            <div className={styles.quizDateInfo}>
-              <p className={styles.quizDate}>Created on : 04 Sep, 2023</p>
-            </div>
-          </div>
-
-          <div className={styles.trendingBox}>
-            <div className={styles.quizInfo}>
-              <h3 className={styles.quizName}>Quiz 1</h3>
-              <div className={styles.impressionContainer}>
-                <p className={styles.impressionCount}>
-                  667
-                  <img src={EyeIcon} alt="impression" />
-                </p>
-              </div>
-            </div>
-            <div className={styles.quizDateInfo}>
-              <p className={styles.quizDate}>Created on : 04 Sep, 2023</p>
-            </div>
-          </div>
-
-          <div className={styles.trendingBox}>
-            <div className={styles.quizInfo}>
-              <h3 className={styles.quizName}>Quiz 1</h3>
-              <div className={styles.impressionContainer}>
-                <p className={styles.impressionCount}>
-                  667
-                  <img src={EyeIcon} alt="impression" />
-                </p>
-              </div>
-            </div>
-            <div className={styles.quizDateInfo}>
-              <p className={styles.quizDate}>Created on : 04 Sep, 2023</p>
-            </div>
-          </div>
-
-          <div className={styles.trendingBox}>
-            <div className={styles.quizInfo}>
-              <h3 className={styles.quizName}>Quiz 1</h3>
-                <p className={styles.impressionCount}>
-                  667
-                  <img src={EyeIcon} alt="impression" />
-                </p>
-            </div>
-            <div className={styles.quizDateInfo}>
-              <p className={styles.quizDate}>Created on : 04 Sep, 2023</p>
-            </div>
-          </div>
-
-          <div className={styles.trendingBox}>
-            <div className={styles.quizInfo}>
-              <h3 className={styles.quizName}>Quiz 1</h3>
-              <div className={styles.impressionContainer}>
-                <p className={styles.impressionCount}>
-                  667
-                  <img src={EyeIcon} alt="impression" />
-                </p>
-              </div>
-            </div>
-            <div className={styles.quizDateInfo}>
-              <p className={styles.quizDate}>Created on : 04 Sep, 2023</p>
-            </div>
-          </div>
-
-
-        </div>
-      </div>
+        </>
+      )}
     </div>
   );
 };
