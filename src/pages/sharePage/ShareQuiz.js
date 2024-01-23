@@ -2,22 +2,14 @@ import React from "react";
 import styles from "./ShareQuiz.module.css";
 import { RxCross2 } from "react-icons/rx";
 import toast from "react-hot-toast";
+import handleShareClick from "../../utils/clipboardUtils";
 
-const ShareQuiz = ({setShareModalOpen}) => {
+const ShareQuiz = ({setShareModalOpen , selectedQuizId , setSelectedQuizId}) => {
   const link = "abcdxusdisnvkjvnxfdn/.gbcv";
 
-  const handleShareClick = () => {
-    navigator.clipboard
-      .writeText(link)
-      .then(() => {
-        toast.success("Link copied to clipboard!", {
-          position: "top-right",
-        });
-      })
-      .catch((err) => {
-        console.error("Failed to copy link: ", err);
-      });
-  };
+  const handleClick = () => {
+    handleShareClick(link)
+  }
 
   return (
     <div className={styles.ShareQuizContainer}>
@@ -29,7 +21,7 @@ const ShareQuiz = ({setShareModalOpen}) => {
           <p className={styles.title}>Congrats your Quiz is Published!</p>
           <div className={styles.urlHolder}>{link}</div>
           <div className={styles.buttonHolder}>
-            <button className={styles.shareButton} onClick={handleShareClick}>
+            <button className={styles.shareButton} onClick={handleClick}>
               Share
             </button>
           </div>

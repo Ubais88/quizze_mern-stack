@@ -22,12 +22,12 @@ const App = () => {
               <Routes>
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/analytics" element={<Analytics />} />
-                <Route path="/questionsanalytics" element={<QuestionAnalysis/>} />
+                <Route path="/questionsanalytics/:id" element={<QuestionAnalysis/>} />
               </Routes>
             </div>
           }
         />
-        <Route path="/playquiz" element={<PlayQuiz/>} />
+        <Route path="/playquiz/:id" element={<PlayQuiz/>} />
         
       </Routes>
     </div>

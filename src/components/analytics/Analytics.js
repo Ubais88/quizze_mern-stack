@@ -5,18 +5,18 @@ import { HiTrash } from "react-icons/hi";
 import { IoShareSocialSharp } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import DeleteQuiz from "../deleteQuiz/DeleteQuiz";
-import ShareQuiz from "../../pages/sharePage/ShareQuiz";
 import { useAuth } from "../../store/auth";
 import axios from "axios";
 import toast from "react-hot-toast";
+import handleShareClick from "../../utils/clipboardUtils";
 
 const Analytics = () => {
   const { authorizationToken, BASE_URL } = useAuth();
   const navigate = useNavigate();
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
-  const [shareModalOpen, setShareModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [quizAnalysis, setQuizAnalysis] = useState();
+  const [deleteQuiz, setDeleteQuiz] = useState("");
 
   const fetchAnalysisData = async () => {
     try {
@@ -47,9 +47,23 @@ const Analytics = () => {
     }
   };
 
+  const deleteHandler = (quizId) => {
+    setDeleteQuiz(quizId);
+    setDeleteModalOpen(true);
+  };
+
+  const shareHandler = (quizId) => {
+    handleShareClick(quizId)
+  };
+
+  const handleAnalysisClick = (quizId) => {
+    navigate(`/questionsanalytics/${quizId}`);
+  }
+  
+
   useEffect(() => {
     fetchAnalysisData();
-  }, []);
+  }, [deleteQuiz]);
 
   return (
     <div className={styles.quizAnalyticsPage}>
@@ -80,7 +94,7 @@ const Analytics = () => {
                 <tbody className={styles.tableBody}>
                   {quizAnalysis.map((quiz, index) => (
                     <tr
-                      key={quiz.id}
+                      key={index}
                       className={
                         (index + 1) % 2 === 0 ? styles.evenRow : styles.oddRow
                       }
@@ -101,12 +115,12 @@ const Analytics = () => {
                           <HiTrash
                             size={23}
                             color="#D60000"
-                            onClick={() => setDeleteModalOpen(true)}
+                            onClick={() => deleteHandler(quiz._id)}
                           />
                           <IoShareSocialSharp
                             size={23}
                             color="#60B84B"
-                            onClick={() => setShareModalOpen(true)}
+                            onClick={() => shareHandler(quiz._id)}
                           />
                         </div>
                       </td>
@@ -115,7 +129,7 @@ const Analytics = () => {
                       >
                         <p
                           className={styles.analysisPara}
-                          onClick={() => navigate("/questionsanalytics")}
+                          onClick={() => handleAnalysisClick(quiz._id)}
                         >
                           Question Wise Analysis
                         </p>
@@ -130,9 +144,12 @@ const Analytics = () => {
       )}
 
       {deleteModalOpen && (
-        <DeleteQuiz setDeleteModalOpen={setDeleteModalOpen} />
+        <DeleteQuiz
+          setDeleteModalOpen={setDeleteModalOpen}
+          deleteQuiz={deleteQuiz}
+          setDeleteQuiz={setDeleteQuiz}
+        />
       )}
-      {shareModalOpen && <ShareQuiz setShareModalOpen={setShareModalOpen} />}
     </div>
   );
 };
