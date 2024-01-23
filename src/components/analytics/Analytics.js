@@ -1,159 +1,139 @@
-import React, { useState } from 'react';
-import styles from './Analytics.module.css';
+import React, { useEffect, useState } from "react";
+import styles from "./Analytics.module.css";
 import { TiEdit } from "react-icons/ti";
 import { HiTrash } from "react-icons/hi";
 import { IoShareSocialSharp } from "react-icons/io5";
-import { useNavigate } from 'react-router-dom';
-import DeleteQuiz from '../deleteQuiz/DeleteQuiz';
-import ShareQuiz from '../../pages/sharePage/ShareQuiz';
+import { useNavigate } from "react-router-dom";
+import DeleteQuiz from "../deleteQuiz/DeleteQuiz";
+import ShareQuiz from "../../pages/sharePage/ShareQuiz";
+import { useAuth } from "../../store/auth";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 const Analytics = () => {
-  const navigate = useNavigate()
-  const [deleteModalOpen , setDeleteModalOpen] = useState(false);
-  const [shareModalOpen , setShareModalOpen] = useState(false);
-  const quizData = [
-    {
-      id: 1,
-      name: 'Quiz 1',
-      createdAt: '2023-09-04',
-      impressions: 150,
-    },
-    {
-      id: 2,
-      name: 'Quiz 2',
-      createdAt: '2023-09-24',
-      impressions: 210,
-    },
-    {
-      id: 3,
-      name: 'Quiz 3',
-      createdAt: '2023-09-24',
-      impressions: 210,
-    },
-    {
-      id: 4,
-      name: 'Quiz 4',
-      createdAt: '2023-09-24',
-      impressions: 210,
-    },
-    {
-      id: 5,
-      name: 'Quiz 1',
-      createdAt: '2023-09-04',
-      impressions: 150,
-    },
-    {
-      id: 6,
-      name: 'Quiz 2',
-      createdAt: '2023-09-24',
-      impressions: 210,
-    },
-    {
-      id: 7,
-      name: 'Quiz 3',
-      createdAt: '2023-09-24',
-      impressions: 210,
-    },
-    {
-      id: 8,
-      name: 'Quiz 4',
-      createdAt: '2023-09-24',
-      impressions: 210,
-    },
-    {
-      id: 9,
-      name: 'Quiz 1',
-      createdAt: '2023-09-04',
-      impressions: 150,
-    },
-    {
-      id: 10,
-      name: 'Quiz 2',
-      createdAt: '2023-09-24',
-      impressions: 210,
-    },
-    {
-      id: 31,
-      name: 'Quiz 3',
-      createdAt: '2023-09-24',
-      impressions: 210,
-    },
-    {
-      id: 41,
-      name: 'Quiz 4',
-      createdAt: '2023-09-24',
-      impressions: 210,
-    },    {
-      id: 11,
-      name: 'Quiz 1',
-      createdAt: '2023-09-04',
-      impressions: 150,
-    },
-    {
-      id: 21,
-      name: 'Quiz 2',
-      createdAt: '2023-09-24',
-      impressions: 210,
-    },
-    {
-      id: 32,
-      name: 'Quiz 3',
-      createdAt: '2023-09-24',
-      impressions: 210,
-    },
-    {
-      id: 42,
-      name: 'Quiz 4',
-      createdAt: '2023-09-24',
-      impressions: 210,
-    },
-    
-  ];
+  const { authorizationToken, BASE_URL } = useAuth();
+  const navigate = useNavigate();
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [shareModalOpen, setShareModalOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [quizAnalysis, setQuizAnalysis] = useState();
+
+  const fetchAnalysisData = async () => {
+    try {
+      const response = await axios.get(`${BASE_URL}/quiz/getallquiz`, {
+        headers: {
+          Authorization: authorizationToken,
+        },
+      });
+
+      console.log("analysis response: ", response);
+
+      if (response.status === 200) {
+        // Successful fetch analysis data
+        setQuizAnalysis(response.data.formattedQuizzes);
+        setLoading(false);
+      } else {
+        // Failed analysis
+        const message = response.data.message;
+        toast.error(message);
+        console.log("Invalid credential");
+      }
+    } catch (error) {
+      // Log any errors
+      console.error("stats  error:", error);
+      toast.error(error.response?.data?.message || "Something went wrong", {
+        position: "top-right",
+      });
+    }
+  };
+
+  useEffect(() => {
+    fetchAnalysisData();
+  }, []);
+
 
   return (
     <div className={styles.quizAnalyticsPage}>
-      <h2 className={styles.analyticsTitle}>Quiz Analytics</h2>
-      <div className={styles.quizTableContainer}>
-      <table className={styles.quizTable}>
-        <thead className={styles.headerContainer}>
-          <tr>
-            <th className={`${styles.tableHeader} ${styles.startBorderRadius}`}>S.No.</th>
-            <th className={styles.tableHeader}>Quiz Name</th>
-            <th className={styles.tableHeader}>Created At</th>
-            <th className={styles.tableHeader}>Impressions</th>
-            <th className={styles.tableHeader}></th>
-            <th className={`${styles.tableHeader} ${styles.endBorderRadius}`}></th>
-          </tr>
-        </thead>
-        <tbody className={styles.tableBody}>
-          {quizData.map((quiz, index) => (
-            <tr key={quiz.id} className={(index+1) % 2 === 0 ? styles.evenRow : styles.oddRow}>
-              <td className={`${styles.serialNumber} ${styles.startBorderRadius}`}>{index + 1}</td>
-              <td className={styles.quizName}>{quiz.name}</td>
-              <td className={styles.createdAt}>{quiz.createdAt}</td>
-              <td className={`${styles.impressions}`}>{quiz.impressions}</td>
-              <td className={styles.operations}>
-                <div className={styles.operationButton}>
-                <TiEdit size={23} color='#854CFF'/>
-                <HiTrash size={23} color='#D60000' onClick={() => setDeleteModalOpen(true)}/>
-                <IoShareSocialSharp size={23} color='#60B84B' onClick={() => setShareModalOpen(true)}/>
-                </div>
-              </td>
-              <td className={`${styles.analysis} ${styles.endBorderRadius}`}>
-                <p className={styles.analysisPara} onClick={() => navigate('/questionsanalytics')}>Question Wise Analysis</p>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      </div>
+      {loading ? (
+        <h1>Loading...</h1>
+      ) : (
+        <>
+          <h2 className={styles.analyticsTitle}>Quiz Analytics</h2>
+          <div className={styles.quizTableContainer}>
+            {quizAnalysis.length > 0 && (
+              <table className={styles.quizTable}>
+                <thead className={styles.headerContainer}>
+                  <tr>
+                    <th
+                      className={`${styles.tableHeader} ${styles.startBorderRadius}`}
+                    >
+                      S.No.
+                    </th>
+                    <th className={styles.tableHeader}>Quiz Name</th>
+                    <th className={styles.tableHeader}>Created At</th>
+                    <th className={styles.tableHeader}>Impressions</th>
+                    <th className={styles.tableHeader}></th>
+                    <th
+                      className={`${styles.tableHeader} ${styles.endBorderRadius}`}
+                    ></th>
+                  </tr>
+                </thead>
+                <tbody className={styles.tableBody}>
+                  {quizAnalysis.map((quiz, index) => (
+                    <tr
+                      key={quiz.id}
+                      className={
+                        (index + 1) % 2 === 0 ? styles.evenRow : styles.oddRow
+                      }
+                    >
+                      <td
+                        className={`${styles.serialNumber} ${styles.startBorderRadius}`}
+                      >
+                        {index + 1}
+                      </td>
+                      <td className={styles.quizName}>{quiz.quizName}</td>
+                      <td className={styles.createdAt}>{quiz.createdOn}</td>
+                      <td className={`${styles.impressions}`}>
+                        {quiz.impressions}
+                      </td>
+                      <td className={styles.operations}>
+                        <div className={styles.operationButton}>
+                          <TiEdit size={23} color="#854CFF" />
+                          <HiTrash
+                            size={23}
+                            color="#D60000"
+                            onClick={() => setDeleteModalOpen(true)}
+                          />
+                          <IoShareSocialSharp
+                            size={23}
+                            color="#60B84B"
+                            onClick={() => setShareModalOpen(true)}
+                          />
+                        </div>
+                      </td>
+                      <td
+                        className={`${styles.analysis} ${styles.endBorderRadius}`}
+                      >
+                        <p
+                          className={styles.analysisPara}
+                          onClick={() => navigate("/questionsanalytics")}
+                        >
+                          Question Wise Analysis
+                        </p>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+          </div>
+        </>
+      )}
 
-      {
-        deleteModalOpen && (<DeleteQuiz setDeleteModalOpen={setDeleteModalOpen}/>)
-      }
-      {
-        shareModalOpen && (<ShareQuiz setShareModalOpen={setShareModalOpen}/>)
-      }
+      {deleteModalOpen && (
+        <DeleteQuiz setDeleteModalOpen={setDeleteModalOpen} />
+      )}
+      {shareModalOpen && <ShareQuiz setShareModalOpen={setShareModalOpen} />}
     </div>
   );
 };
