@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import styles from "./SignupForm.module.css";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../store/auth";
+import axios from "axios";
 
 const SignupForm = ({setLoginFormActive}) => {
+  const { BASE_URL } = useAuth();
   const [signupFormData, setSignupFormData] = useState({
     name: "",
     email: "",
@@ -11,7 +13,6 @@ const SignupForm = ({setLoginFormActive}) => {
     cPassword: "",
   });
   const [errors, setErrors] = useState({});
-  const navigate = useNavigate()
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -55,12 +56,48 @@ const SignupForm = ({setLoginFormActive}) => {
     } else return true;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
 
     if (isFormValid()) {
-      toast.success("Form submitted successfully!");
-      setLoginFormActive(true);
+      try {
+        const response = await axios.post(
+          `${BASE_URL}/auth/signup`,
+          JSON.stringify(signupFormData),
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        console.log("signup response:", response);
+
+        if (response.status === 200) {
+          // Successful login
+          setSignupFormData({
+            name: "",
+            email: "",
+            password: "",
+            cPassword: "",
+          });
+          toast.success("Signup successful",{
+            position: "top-right",
+          });
+          setLoginFormActive(true);
+        } else {
+          // Failed login
+          const res_data = response.data; // Access the response data directly
+          toast.error(res_data.message);
+          console.log("Invalid credential");
+        }
+      } catch (error) {
+        // Log any errors
+        console.error("Signup error:", error);
+        toast.error(error.response.data.message,{
+          position: "top-right",
+        })
+      }
     }
   };
 
@@ -115,7 +152,7 @@ const SignupForm = ({setLoginFormActive}) => {
               <p className={styles.inputPara}>Confirm Password</p>
             </label>
             <input
-              type="text"
+              type="password"
               name="cPassword"
               // value={signupFormData.cpassword}
               className={`${styles.inputField} ${
