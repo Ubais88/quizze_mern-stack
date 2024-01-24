@@ -2,12 +2,16 @@ import React from "react";
 import styles from "./Congrats.module.css";
 import trophy from "../../assets/trophy.png";
 
-const Congrats = () => {
-  const polltype = true;
+const Congrats = ({
+  quizType,
+  totalQuestions,
+  correctAnswers,
+  incorrectAnswers,
+}) => {
   return (
     <div className={styles.congratsContainer}>
       <div className={styles.congratsModal}>
-        {polltype ? (
+        {quizType === "Poll" ? (
           <p className={styles.textPolltype}>
             Thank you for participating in the Poll
           </p>
@@ -23,10 +27,11 @@ const Congrats = () => {
               />
             </div>
             <div className={styles.congratsScore}>
-              <p className={styles.text}>
-                Your Score is {" "}</p>
-                <span className={styles.highlightedText}> 03/04</span>
-              
+              <p className={styles.text}>Your Score is </p>
+              <span className={styles.highlightedText}>
+                {" "}
+                {correctAnswers}/{totalQuestions}
+              </span>
             </div>
           </>
         )}

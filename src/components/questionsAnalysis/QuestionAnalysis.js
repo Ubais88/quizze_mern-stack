@@ -1,15 +1,19 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./QuestionAnalysis.module.css";
 import { useAuth } from "../../store/auth";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { useParams } from "react-router-dom";
 
 const QuestionAnalysis = () => {
+  const { id } = useParams();
+  const [loading, setLoading] = useState(true);
   const { authorizationToken, BASE_URL } = useAuth();
-  
+  const [quizAnalysis , setQuizAnalysis] = useState()
+
   const fetchAnalysisData = async () => {
     try {
-      const response = await axios.get(`${BASE_URL}/quiz/getallquiz`, {
+      const response = await axios.get(`${BASE_URL}/quiz/analysis/${id}`, {
         headers: {
           Authorization: authorizationToken,
         },
@@ -19,7 +23,7 @@ const QuestionAnalysis = () => {
 
       if (response.status === 200) {
         // Successful fetch analysis data
-        setQuizAnalysis(response.data.formattedQuizzes);
+        setQuizAnalysis(response.data.quiz);
         setLoading(false);
       } else {
         // Failed analysis
@@ -35,6 +39,11 @@ const QuestionAnalysis = () => {
       });
     }
   };
+
+  useEffect(() => {
+    fetchAnalysisData();
+  }, []);
+
   const quizType = "quiz Type";
   const data = [
     {
@@ -65,71 +74,73 @@ const QuestionAnalysis = () => {
 
   return (
     <div className={styles.questionAnalysisContainer}>
-      <div className={styles.quizInfo}>
-        <p className={styles.quizTitle}>Quiz 2 Question Analysis</p>
-        <div className={styles.quizDetails}>
-          <span className={styles.createdOn}>Created on: 04 Sep, 2023</span>
-          <span className={styles.impressions}>Impressions: 667</span>
-        </div>
-      </div>
-
-      <div className={styles.analysisSection}>
-        {data.map((item, index) => (
-          <div key={index} className={styles.questionAnalysis}>
-            <p className={styles.questionText}>{item.question}</p>
-            {quizType !== "Poll Type" ? (
-              <div className={styles.attemptDetails}>
-                <div className={styles.attemptItem}>
-                  <p className={styles.attemptValue}>{item.totalAttempt}</p>
-                  <span className={styles.attemptLabel}>
-                    people attempted the question
-                  </span>
-                </div>
-                <div className={styles.attemptItem}>
-                  <p className={styles.attemptValue}>{item.correctAnswer}</p>
-                  <span className={styles.attemptLabel}>
-                    people answered correctly
-                  </span>
-                </div>
-                <div className={styles.attemptItem}>
-                  <p className={styles.attemptValue}>{item.incorrectAnswer}</p>
-                  <span className={styles.attemptLabel}>
-                    people answered incorrectly
-                  </span>
-                </div>
-              </div>
-            ) : (
-              <div className={styles.pollAttemptDetails}>
-                <div className={styles.pollAttemptItem}>
-                  <p className={styles.attemptValue}>25</p>
-                  <span className={styles.attemptLabel}>
-                    option 1
-                  </span>
-                </div>
-                <div className={styles.pollAttemptItem}>
-                  <p className={styles.attemptValue}>23</p>
-                  <span className={styles.attemptLabel}>
-                    option 2
-                  </span>
-                </div>
-                <div className={styles.pollAttemptItem}>
-                  <p className={styles.attemptValue}>12</p>
-                  <span className={styles.attemptLabel}>
-                    option 3
-                  </span>
-                </div>
-                <div className={styles.pollAttemptItem}>
-                  <p className={styles.attemptValue}>23</p>
-                  <span className={styles.attemptLabel}>
-                    option 4
-                  </span>
-                </div>
-              </div>
-            )}
-            <div className={styles.divider}></div>
+      {loading ? (
+        <h1>Loading...</h1>
+      ) : (
+        <>
+          <div className={styles.quizInfo}>
+            <p className={styles.quizTitle}>Quiz 2 Question Analysis</p>
+            <div className={styles.quizDetails}>
+              <span className={styles.createdOn}>Created on: {quizAnalysis.createdOn}</span>
+              <span className={styles.impressions}>Impressions: {quizAnalysis.impressions}</span>
+            </div>
           </div>
-        ))}
-      </div>
+
+          <div className={styles.analysisSection}>
+            {quizAnalysis.questions.map((question, index) => (
+              <div key={index} className={styles.questionAnalysis}>
+                <p className={styles.questionText}>{question.questionText}</p>
+                {quizAnalysis.quizType !== "Poll" ? (
+                  <div className={styles.attemptDetails}>
+                    <div className={styles.attemptItem}>
+                      <p className={styles.attemptValue}>{question.totalAnswers}</p>
+                      <span className={styles.attemptLabel}>
+                        people attempted the question
+                      </span>
+                    </div>
+                    <div className={styles.attemptItem}>
+                      <p className={styles.attemptValue}>
+                        {question.correctAnswers}
+                      </p>
+                      <span className={styles.attemptLabel}>
+                        people answered correctly
+                      </span>
+                    </div>
+                    <div className={styles.attemptItem}>
+                      <p className={styles.attemptValue}>
+                        {question.wrongAnswers}
+                      </p>
+                      <span className={styles.attemptLabel}>
+                        people answered incorrectly
+                      </span>
+                    </div>
+                  </div>
+                ) : (
+                  <div className={styles.pollAttemptDetails}>
+                    <div className={styles.pollAttemptItem}>
+                      <p className={styles.attemptValue}>25</p>
+                      <span className={styles.attemptLabel}>option 1</span>
+                    </div>
+                    <div className={styles.pollAttemptItem}>
+                      <p className={styles.attemptValue}>23</p>
+                      <span className={styles.attemptLabel}>option 2</span>
+                    </div>
+                    <div className={styles.pollAttemptItem}>
+                      <p className={styles.attemptValue}>12</p>
+                      <span className={styles.attemptLabel}>option 3</span>
+                    </div>
+                    <div className={styles.pollAttemptItem}>
+                      <p className={styles.attemptValue}>23</p>
+                      <span className={styles.attemptLabel}>option 4</span>
+                    </div>
+                  </div>
+                )}
+                <div className={styles.divider}></div>
+              </div>
+            ))}
+          </div>
+        </>
+      )}
     </div>
   );
 };

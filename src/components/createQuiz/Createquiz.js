@@ -4,10 +4,9 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import QuizModal from "../../pages/modal/QuizModal";
 import ShareQuiz from "../../pages/sharePage/ShareQuiz";
-import DeleteQuiz from "../deleteQuiz/DeleteQuiz";
+
 
 const Createquiz = ({ setModalOpen }) => {
-  const navigate = useNavigate();
   const [selectedQuizType, setSelectedQuizType] = useState("");
   const [quizInfo, setQuizInfo] = useState({
     quizTitle: "",
