@@ -10,8 +10,14 @@ import axios from "axios";
 import ShareQuiz from "../sharePage/ShareQuiz";
 
 const QuizModal = () => {
-  const { setModalOpen, BASE_URL, authorizationToken,updateQuizId, quizData, quizInfo } =
-    useAuth();
+  const {
+    setModalOpen,
+    BASE_URL,
+    authorizationToken,
+    updateQuizId,
+    quizData,
+    quizInfo,
+  } = useAuth();
 
   const defaultQuestion = {
     id: 1,
@@ -121,6 +127,7 @@ const QuizModal = () => {
     text,
     isImageUrl = false
   ) => {
+    console.log("optionType",optionType)
     setQuestions((prevQuestions) =>
       prevQuestions.map((question, qIndex) =>
         qIndex === questionIndex
@@ -215,7 +222,7 @@ const QuizModal = () => {
     if (quizData) {
       console.log("quizData", quizData);
       try {
-        const method = updateQuizId ? "PUT" :"POST"; 
+        const method = updateQuizId ? "PUT" : "POST";
         // Construct the URL based on the method and pathPrefix
         const url = `${BASE_URL}/quiz/${
           method === "PUT" ? `updatequiz/${updateQuizId}` : "/create"
@@ -230,17 +237,14 @@ const QuizModal = () => {
           },
         });
 
-        // const response = await axios.post(`${BASE_URL}/quiz/create`, quizData, {
-        //   headers: {
-        //     Authorization: authorizationToken,
-        //   },
-        // });
-        console.log("response.data", response.data)
+        console.log("response.data", response.data);
         if (response.status === 201 || response.status === 200) {
           const quizId = response.data.quizId;
           setShareQuizId(quizId);
           setShareModalOpen(true);
-          toast.success(`Quiz ${updateQuizId ? "Updated" : "created"} successfully`);
+          toast.success(
+            `Quiz ${updateQuizId ? "Updated" : "created"} successfully`
+          );
         } else {
           const message = response.data.message;
           toast.error(message);
@@ -331,7 +335,7 @@ const QuizModal = () => {
                       }
                     />
                   )}
-
+                
                   <input
                     type="text"
                     placeholder={optionType.split(" ")[0]}
@@ -344,7 +348,7 @@ const QuizModal = () => {
                         selectedCount,
                         optionIndex,
                         e.target.value,
-                        false
+                        false 
                       )
                     }
                   />

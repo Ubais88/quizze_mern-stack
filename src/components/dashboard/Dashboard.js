@@ -48,7 +48,7 @@ const Dashboard = () => {
   return (
     <div className={styles.dashboardContainer}>
       {loading ? (
-        <h1>LOading</h1>
+        <div class="spinner"></div>
       ) : (
         <>
           <div className={styles.boxes}>

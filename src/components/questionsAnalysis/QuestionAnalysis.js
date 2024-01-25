@@ -47,7 +47,7 @@ const QuestionAnalysis = () => {
   return (
     <div className={styles.questionAnalysisContainer}>
       {loading ? (
-        <h1>Loading...</h1>
+        <div class="spinner"></div>
       ) : (
         <>
           <div className={styles.quizInfo}>

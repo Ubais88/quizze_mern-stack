@@ -128,7 +128,7 @@ const PlayQuiz = () => {
   return (
     <div className={styles.playQuizContainer}>
       {loading ? (
-        <h1>Loading</h1>
+        <div class="spinner"></div>
       ) : (
         <div className={styles.playQuizModal}>
           <div className={styles.quizHeader}>
@@ -162,7 +162,7 @@ const PlayQuiz = () => {
                   </div>
                 ) : option.type === "imageurl" ? (
                   <img
-                    src={option.imageUrl}
+                    src={option.optionText}
                     alt="Option Image"
                     className={styles.optionImage}
                   />

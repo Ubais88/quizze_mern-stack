@@ -105,7 +105,7 @@ const Analytics = () => {
   return (
     <div className={styles.quizAnalyticsPage}>
       {loading ? (
-        <h1>Loading...</h1>
+        <div class="spinner"></div>
       ) : (
         <>
           <h2 className={styles.analyticsTitle}>Quiz Analytics</h2>
