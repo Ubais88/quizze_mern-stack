@@ -178,3 +178,56 @@ cursor: pointer;
   color: #fff;
 }
 
+
+
+/* textform  */
+
+.optionsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.optionContainer {
+  display: flex;
+  align-items: center;
+  /* width: 100%; */
+  /* justify-content: center; */
+  gap: 0.5rem;
+}
+.addOption{
+    color: #9F9F9F;
+}
+.optionText{
+    color: black;
+}
+
+.optionText,
+.addOption {
+  background-color: #ffff;
+  border-radius: 0.6rem;
+  box-shadow: 0px 0px 25px 0px #00000026;
+  border: none;
+  font-family: Poppins;
+  font-size: 1.1rem;
+  font-weight: 500;
+  padding: 0.3rem 0.5rem;
+  width: 10vw;
+  
+  cursor: pointer;
+  outline: none;
+}
+
+.trash{
+    cursor: pointer;
+}
+
+.addOption{
+    width: 100%;
+}
+
+.selectedOption{
+    background-color: #60B84B;
+    color: #fff;
+  }

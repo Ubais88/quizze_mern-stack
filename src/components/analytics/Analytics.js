@@ -11,7 +11,7 @@ import toast from "react-hot-toast";
 import handleShareClick from "../../utils/clipboardUtils";
 
 const Analytics = () => {
-  const { authorizationToken, BASE_URL } = useAuth();
+  const { authorizationToken, BASE_URL ,setModalOpen ,setQuizData,setQuizInfo, setUpdateQuizId, setCreateQuiz } = useAuth();
   const navigate = useNavigate();
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -53,13 +53,50 @@ const Analytics = () => {
   };
 
   const shareHandler = (quizId) => {
-    handleShareClick(quizId)
+    handleShareClick(quizId);
   };
 
   const handleAnalysisClick = (quizId) => {
     navigate(`/questionsanalytics/${quizId}`);
-  }
+  };
+
+  const editHandler = async(quizId) => {
+      try {
+        const response = await axios.get(
+          `${BASE_URL}/quiz/getquiz/${quizId}`,
+          {
+            headers: {
+              Authorization: authorizationToken,
+            },
+          }
+        );
   
+        console.log("getquiz response: ", response);
+  
+        if (response.status === 200) {
+          // Successful getstats
+          setQuizInfo({
+            quizName: response.data.quiz.quizName,
+            quizType: response.data.quiz.quizType,
+          })
+          setQuizData(response.data.quiz);
+          console.log("quizData response:", response.data);
+        } else {
+          // Failed getstats
+          const message = response.data.message;
+          toast.error(message);
+          console.log("Invalid credential");
+        }
+      } catch (error) {
+        // Log any errors
+        console.error("stats  error:", error);
+        toast.error("Something went wrong");
+      }
+
+    setUpdateQuizId(quizId)
+    setModalOpen(true);
+    setCreateQuiz(false);
+  }
 
   useEffect(() => {
     fetchAnalysisData();
@@ -104,14 +141,22 @@ const Analytics = () => {
                       >
                         {index + 1}
                       </td>
-                      <td className={styles.quizName}>{quiz.quizName}</td>
+                      <td className={styles.quizName}>
+                        {quiz.quizName.length > 15
+                          ? `${quiz.quizName.slice(0, 11)}..`
+                          : quiz.quizName}
+                      </td>
                       <td className={styles.createdAt}>{quiz.createdOn}</td>
                       <td className={`${styles.impressions}`}>
                         {quiz.impressions}
                       </td>
                       <td className={styles.operations}>
                         <div className={styles.operationButton}>
-                          <TiEdit size={23} color="#854CFF" />
+                          <TiEdit
+                            size={23}
+                            color="#854CFF"
+                            onClick={() => editHandler(quiz._id)}
+                          />
                           <HiTrash
                             size={23}
                             color="#D60000"

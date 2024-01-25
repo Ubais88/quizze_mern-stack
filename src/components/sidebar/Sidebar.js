@@ -5,10 +5,9 @@ import Createquiz from "../createQuiz/Createquiz";
 import { useAuth } from "../../store/auth";
 
 const Sidebar = () => {
-  const { LogoutUser } = useAuth();
+  const { LogoutUser , modalOpen , setModalOpen} = useAuth();
   const navigate = useNavigate()
   const [selectedMenuItem, setSelectedMenuItem] = useState("dashboard");
-  const [modalOpen , setModalOpen] = useState(false);
   
 
   const handleMenuItemClick = (e) => {
@@ -67,7 +66,7 @@ const logoutClickHandler = () => {
       </div>
     </div>
     {
-      modalOpen && <Createquiz setModalOpen={setModalOpen}/>
+      modalOpen && <Createquiz/>
     }
     </div>
   );

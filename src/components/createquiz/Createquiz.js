@@ -1,26 +1,25 @@
 import React, { useState } from "react";
 import styles from "./Createquiz.module.css";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
 import QuizModal from "../../pages/modal/QuizModal";
-import ShareQuiz from "../../pages/sharePage/ShareQuiz";
+import { useAuth } from "../../store/auth";
 
-
-const Createquiz = ({ setModalOpen }) => {
+const Createquiz = () => {
+  const { setModalOpen , createQuiz, setCreateQuiz  ,quizInfo , setQuizInfo } = useAuth();
   const [selectedQuizType, setSelectedQuizType] = useState("");
-  const [quizInfo, setQuizInfo] = useState({
-    quizTitle: "",
-    quizType: "",
-  });
+  // const [quizInfo, setQuizInfo] = useState({
+  //   quizName: "",
+  //   quizType: "",
+  // });
   const [errors, setErrors] = useState({});
-  const [createQuiz, setCreateQuiz] = useState(false);
+  // const [createQuiz, setCreateQuiz] = useState(true);
 
   const changeHandler = (e) => {
     setErrors({});
     const { value } = e.target;
     setQuizInfo((prevData) => ({
       ...prevData,
-      quizTitle: value,
+      quizName: value,
     }));
   };
 
@@ -40,7 +39,7 @@ const Createquiz = ({ setModalOpen }) => {
   const isFormValid = () => {
     const newErrors = {};
 
-    if (!quizInfo.quizTitle) {
+    if (!quizInfo.quizName) {
       newErrors.title = "Enter Quiz Title";
     }
 
@@ -55,7 +54,7 @@ const Createquiz = ({ setModalOpen }) => {
 
   const handleContinueClick = () => {
     if (isFormValid()) {
-      toast.success("Valid Form");
+      toast.success("Valid Quiz");
       setCreateQuiz(false);
     }
   };
@@ -90,9 +89,9 @@ const Createquiz = ({ setModalOpen }) => {
                 </div>
                 <div
                   className={`${styles.quizTypeOption} ${
-                    selectedQuizType === "Poll Type" && styles.quizTypeSelected
+                    selectedQuizType === "Poll" && styles.quizTypeSelected
                   }`}
-                  onClick={() => handleQuizTypeChange("Poll Type")}
+                  onClick={() => handleQuizTypeChange("Poll")}
                 >
                   Poll Type
                 </div>
@@ -121,10 +120,7 @@ const Createquiz = ({ setModalOpen }) => {
           </div>
         </div>
       ) : (
-        //<DeleteQuiz />
-        //<ShareQuiz/>
-
-        <QuizModal quizInfo={quizInfo} />
+        <QuizModal/>
       )}
     </div>
   );

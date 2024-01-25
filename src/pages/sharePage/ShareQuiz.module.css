@@ -54,6 +54,10 @@
   font-weight: 600;
   color: #474444;
   padding: 0.3rem;
+  overflow: auto;
+}
+.urlHolder::-webkit-scrollbar {
+  height: 0rem;
 }
 
 .buttonHolder {

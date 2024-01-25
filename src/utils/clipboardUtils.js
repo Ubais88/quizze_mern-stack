@@ -1,8 +1,7 @@
 import toast from "react-hot-toast";
 
 
-const handleShareClick = (link) => {
-    const shareLink = `http://localhost:3000/playquiz/${link}`;
+const handleShareClick = (shareLink) => {
     
     navigator.clipboard
       .writeText(shareLink)

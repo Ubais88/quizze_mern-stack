@@ -79,7 +79,7 @@ const Dashboard = () => {
                 quizStats.trendingQuizzes.map((quiz, index) => (
                   <div key={index} className={styles.trendingBox}>
                     <div className={styles.quizInfo}>
-                      <h3 className={styles.quizName}>{quiz.quizName}</h3>
+                      <h3 className={styles.quizName}>{ quiz.quizName.length > 8 ? `${quiz.quizName.slice(0, 6)}..` : quiz.quizName }</h3>
                       <p className={styles.impressionCount}>
                         {quiz.impressions}
                         <img src={EyeIcon} alt="impression" />

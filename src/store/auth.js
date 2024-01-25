@@ -1,5 +1,6 @@
 import axios from "axios";
 import { createContext, useContext, useEffect, useState } from "react";
+import toast from "react-hot-toast";
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 export const AuthContext = createContext();
@@ -7,6 +8,14 @@ export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem("token"));
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [createQuiz, setCreateQuiz] = useState(true);
+  const [updateQuizId, setUpdateQuizId] = useState();
+  const [quizData , setQuizData] = useState(null)
+  const [quizInfo, setQuizInfo] = useState({
+    quizName: "",
+    quizType: "",
+  });
 
   const authorizationToken = `Bearer ${token}`;
 
@@ -15,11 +24,13 @@ export const AuthProvider = ({ children }) => {
     localStorage.setItem("token", serverToken);
   };
 
-   // logout - remove token from local storage
-   const LogoutUser = () => {
+  // logout - remove token from local storage
+  const LogoutUser = () => {
     setToken("");
     return localStorage.removeItem("token");
   };
+
+
 
   // useEffect(() => {
   //   const checkTokenValidity = async () => {
@@ -54,8 +65,17 @@ export const AuthProvider = ({ children }) => {
       value={{
         isLoggedIn,
         storeTokenInLS,
+        modalOpen,
+        setModalOpen,
         LogoutUser,
         authorizationToken,
+        createQuiz,
+        setCreateQuiz,
+        updateQuizId,
+        setUpdateQuizId,
+        quizInfo,
+        setQuizInfo,
+        quizData , setQuizData,
         BASE_URL,
       }}
     >
