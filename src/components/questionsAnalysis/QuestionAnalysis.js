@@ -9,7 +9,7 @@ const QuestionAnalysis = () => {
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
   const { authorizationToken, BASE_URL } = useAuth();
-  const [quizAnalysis , setQuizAnalysis] = useState()
+  const [quizAnalysis, setQuizAnalysis] = useState();
 
   const fetchAnalysisData = async () => {
     try {
@@ -43,35 +43,7 @@ const QuestionAnalysis = () => {
   useEffect(() => {
     fetchAnalysisData();
   }, []);
-
-  const quizType = "quiz Type";
-  const data = [
-    {
-      question: "Q.1 Question placeholder for analysis?",
-      totalAttempt: "60",
-      correctAnswer: "40",
-      incorrectAnswer: "20",
-    },
-    {
-      question: "Q.2 Question placeholder for analysis?",
-      totalAttempt: "60",
-      correctAnswer: "40",
-      incorrectAnswer: "20",
-    },
-    {
-      question: "Q.3 Question placeholder for analysis?",
-      totalAttempt: "60",
-      correctAnswer: "40",
-      incorrectAnswer: "20",
-    },
-    {
-      question: "Q.4 Question placeholder for analysis?",
-      totalAttempt: "61",
-      correctAnswer: "41",
-      incorrectAnswer: "30",
-    },
-  ];
-
+  // console.log("question.options", quizAnalysis.questions[0].options)
   return (
     <div className={styles.questionAnalysisContainer}>
       {loading ? (
@@ -81,8 +53,12 @@ const QuestionAnalysis = () => {
           <div className={styles.quizInfo}>
             <p className={styles.quizTitle}>Quiz 2 Question Analysis</p>
             <div className={styles.quizDetails}>
-              <span className={styles.createdOn}>Created on: {quizAnalysis.createdOn}</span>
-              <span className={styles.impressions}>Impressions: {quizAnalysis.impressions}</span>
+              <span className={styles.createdOn}>
+                Created on: {quizAnalysis.createdOn}
+              </span>
+              <span className={styles.impressions}>
+                Impressions: {quizAnalysis.impressions}
+              </span>
             </div>
           </div>
 
@@ -93,7 +69,9 @@ const QuestionAnalysis = () => {
                 {quizAnalysis.quizType !== "Poll" ? (
                   <div className={styles.attemptDetails}>
                     <div className={styles.attemptItem}>
-                      <p className={styles.attemptValue}>{question.totalAnswers}</p>
+                      <p className={styles.attemptValue}>
+                        {question.totalAnswers}
+                      </p>
                       <span className={styles.attemptLabel}>
                         people attempted the question
                       </span>
@@ -117,22 +95,16 @@ const QuestionAnalysis = () => {
                   </div>
                 ) : (
                   <div className={styles.pollAttemptDetails}>
-                    <div className={styles.pollAttemptItem}>
-                      <p className={styles.attemptValue}>25</p>
-                      <span className={styles.attemptLabel}>option 1</span>
-                    </div>
-                    <div className={styles.pollAttemptItem}>
-                      <p className={styles.attemptValue}>23</p>
-                      <span className={styles.attemptLabel}>option 2</span>
-                    </div>
-                    <div className={styles.pollAttemptItem}>
-                      <p className={styles.attemptValue}>12</p>
-                      <span className={styles.attemptLabel}>option 3</span>
-                    </div>
-                    <div className={styles.pollAttemptItem}>
-                      <p className={styles.attemptValue}>23</p>
-                      <span className={styles.attemptLabel}>option 4</span>
-                    </div>
+                    {question.options.map((option, optionIndex) => (
+                      <div key={optionIndex} className={styles.pollAttemptItem}>
+                        <p className={styles.attemptValue}>
+                          {option.selectedCount}
+                        </p>
+                        <span className={styles.attemptLabel}>
+                          Option {optionIndex + 1}
+                        </span>
+                      </div>
+                    ))}
                   </div>
                 )}
                 <div className={styles.divider}></div>

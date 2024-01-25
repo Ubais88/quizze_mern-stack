@@ -9,7 +9,7 @@ import { useAuth } from "../../store/auth";
 const PlayQuiz = () => {
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
-  const { authorizationToken, BASE_URL } = useAuth();
+  const { BASE_URL } = useAuth();
   const [questions, setQuestions] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [timeLimit, setTimeLimit] = useState();
@@ -18,38 +18,25 @@ const PlayQuiz = () => {
   const [selectedOption, setSelectedOption] = useState();
   const [finalSubmit, setFinalSubmit] = useState(false);
   const [correctAnswers, setCorrectAnswers] = useState(0);
-  const [incorrectAnswers, setIncorrectAnswers] = useState(0);
-  const [lastSelectedOption, setLastSelectedOption] = useState();
-
-
+  const [totalQuestions, setTotalQuestions] = useState(null);
+  const [userResponses, setUserResponses] = useState([]);
   const fetchAnalysisData = async () => {
     try {
-      const response = await axios.get(`${BASE_URL}/quiz/play/${id}`, {
-        headers: {
-          Authorization: authorizationToken,
-        },
-      });
-
-      console.log("play quiz response: ", response);
+      const response = await axios.get(`${BASE_URL}/quiz/play/${id}`);
 
       if (response.status === 200) {
-        // Successful fetch play quiz data
+        console.log("response.data.savedQuiz", response.data.savedQuiz);
         setQuestions(response.data.savedQuiz.questions);
         setTimeLimit(response.data.savedQuiz.timeLimit);
         setQuizType(response.data.savedQuiz.quizType);
         setLoading(false);
       } else {
-        // Failed play quiz
         const message = response.data.message;
         toast.error(message);
-        console.log("Invalid credential");
       }
     } catch (error) {
-      // Log any errors
       console.error("stats  error:", error);
-      toast.error(error.response?.data?.message || "Something went wrong", {
-        position: "top-right",
-      });
+      toast.error(error.response?.data?.message || "Something went wrong");
     }
   };
 
@@ -57,48 +44,72 @@ const PlayQuiz = () => {
     fetchAnalysisData();
   }, []);
 
-
   const handleOptionClick = (index) => {
-    // Update selected option immediately when an option is clicked
-    setSelectedOption(index);
-    setLastSelectedOption(index);
+    const questionId = questions[currentQuestionIndex].id;
 
-    // Check if the selected option is correct immediately
-    const currentQuestion = questions[currentQuestionIndex];
-    if (currentQuestion && currentQuestion.options[index]) {
-      const isCorrect = currentQuestion.options[index].correct;
-      if (isCorrect) {
-        setCorrectAnswers(correctAnswers + 1);
-      } else {
-        setIncorrectAnswers(incorrectAnswers + 1);
-      }
+    //  already responded to the current question
+    const existingResponseIndex = userResponses.findIndex(
+      (response) => response.questionId === questionId
+    );
+
+    if (existingResponseIndex !== -1) {
+      //  already responded, update the selected option
+      setUserResponses((prevResponses) => {
+        const updatedResponses = [...prevResponses];
+        updatedResponses[existingResponseIndex] = {
+          questionId,
+          selectedOption: index,
+        };
+        return updatedResponses;
+      });
+    } else {
+      // responding for the first time, store the response
+      setUserResponses((prevResponses) => [
+        ...prevResponses,
+        { questionId, selectedOption: index },
+      ]);
     }
+
+    // Update the selected option
+    setSelectedOption(index);
   };
+
+  console.log("userResponse:", userResponses);
 
   const handleNextQuestion = () => {
-    // Check correctness of the last selected option before moving to the next question
-    const currentQuestion = questions[currentQuestionIndex];
-    if (currentQuestion && lastSelectedOption !== undefined) {
-      const isCorrect = currentQuestion.options[lastSelectedOption].correct;
-      if (isCorrect) {
-        setCorrectAnswers(correctAnswers + 1);
-      } else {
-        setIncorrectAnswers(incorrectAnswers + 1);
-      }
-    }
-
-    // Move to the next question
-    if (currentQuestionIndex < questions.length - 1) {
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
-      setTimeRemaining(timeLimit);
-      // Reset selected option to undefined for the new question
-      setSelectedOption(undefined);
-      setLastSelectedOption(undefined);
+    if (currentQuestionIndex + 1 === questions.length) {
+      handlefinalSubmit();
     } else {
-      setFinalSubmit(true);
+      setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
+      setSelectedOption(undefined);
     }
   };
-  
+
+  const handlefinalSubmit = async () => {
+    setTimeLimit(0)
+    try {
+      const response = await axios.post(`${BASE_URL}/quiz/result`, {
+        quizId: id,
+        userResponses,
+        quizType,
+      });
+
+      if (response.status === 200) {
+        // Successful submission
+        const { score, totalQuestions } = response.data;
+        setTotalQuestions(totalQuestions);
+        setCorrectAnswers(score);
+        setFinalSubmit(true);
+      } else {
+        // Handle unsuccessful submission
+        const message = response.data.message;
+        toast.error(message);
+      }
+    } catch (error) {
+      console.error("Error submitting responses:", error);
+      toast.error("Failed to submit responses. Please try again.");
+    }
+  };
 
   useEffect(() => {
     setTimeRemaining(timeLimit);
@@ -107,7 +118,6 @@ const PlayQuiz = () => {
         if (prevTimeRemaining === 1) {
           handleNextQuestion();
           clearInterval(intervalId);
-          console.log("clear interval");
         }
         return prevTimeRemaining - 1;
       });
@@ -126,7 +136,9 @@ const PlayQuiz = () => {
               questions.length
             }`}</p>
             {timeLimit > 0 && (
-              <p className={styles.quizTimer}>{`00:${timeRemaining < 10 ? `0${timeRemaining}` : timeRemaining}s`}</p>
+              <p className={styles.quizTimer}>{`00:${
+                timeRemaining < 10 ? `0${timeRemaining}` : timeRemaining
+              }s`}</p>
             )}
           </div>
 
@@ -156,7 +168,9 @@ const PlayQuiz = () => {
                   />
                 ) : (
                   <div className={styles.textImageoption}>
-                    <p className={styles.optionImageText}>{option.optionText}</p>
+                    <p className={styles.optionImageText}>
+                      {option.optionText}
+                    </p>
                     <img
                       src={option.imageUrl}
                       alt="Option Image"
@@ -168,15 +182,21 @@ const PlayQuiz = () => {
             ))}
           </div>
 
-          <button className={styles.nextButton} onClick={handleNextQuestion}>
+          <button
+            className={styles.nextButton}
+            onClick={
+              currentQuestionIndex + 1 === questions.length
+                ? handlefinalSubmit 
+                : handleNextQuestion
+            }
+          >
             {currentQuestionIndex + 1 === questions.length ? "Submit" : "NEXT"}
           </button>
           {finalSubmit && (
             <Congrats
               quizType={quizType}
-              totalQuestions={questions.length}
+              totalQuestions={totalQuestions}
               correctAnswers={correctAnswers}
-              incorrectAnswers={incorrectAnswers}
             />
           )}
         </div>

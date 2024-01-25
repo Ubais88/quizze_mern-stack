@@ -10,7 +10,7 @@ const ShareQuiz = ({setShareModalOpen , shareQuizId}) => {
   const url = `http://localhost:3000/playquiz/${shareQuizId}`;
 
   const handleClick = () => {
-    handleShareClick(url)
+    handleShareClick(shareQuizId)
   }
 
   const crossClickHandler =() => {

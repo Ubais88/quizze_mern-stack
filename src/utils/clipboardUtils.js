@@ -1,10 +1,11 @@
 import toast from "react-hot-toast";
 
 
-const handleShareClick = (shareLink) => {
-    
+const handleShareClick = (shareQuizId) => {
+  
+  const url = `http://localhost:3000/playquiz/${shareQuizId}`;
     navigator.clipboard
-      .writeText(shareLink)
+      .writeText(url)
       .then(() => {
         toast.success("Link copied to clipboard!", {
           position: "top-right",
