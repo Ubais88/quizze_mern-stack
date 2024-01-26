@@ -187,13 +187,12 @@ const QuizModal = () => {
       )
     );
   };
-
+  console.log("question: " , questions)
   const handleCreateQuiz = async () => {
     // Prepare the final quiz data
     const quizData = createQuizData(
       quizInfo,
       selectedTime,
-      LogoutUser,
       questions,
       optionType
     );

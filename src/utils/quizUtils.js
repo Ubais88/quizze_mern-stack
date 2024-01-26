@@ -2,6 +2,7 @@ import toast from "react-hot-toast";
 
 export const createQuizData = (quizInfo, selectedTime, questions, optionType) => {
   // Validation checks
+  console.log("top questions", questions)
   const isValid = validateQuizData(questions, optionType, quizInfo.quizType);
 
   if (!isValid) {
@@ -34,7 +35,8 @@ export const createQuizData = (quizInfo, selectedTime, questions, optionType) =>
   return quizData;
 };
 
-const validateQuizData = (questions, optionType, quizType) => {
+const validateQuizData = (questions, quizType) => {
+  console.log("questions validate : ", questions)
   let isValid = true; // Initialize isValid to true
 
   for (const question of questions) {
