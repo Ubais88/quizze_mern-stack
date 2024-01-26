@@ -15,6 +15,7 @@ const QuizModal = () => {
     BASE_URL,
     authorizationToken,
     updateQuizId,
+    LogoutUser,
     quizData,
     quizInfo,
   } = useAuth();
