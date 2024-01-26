@@ -7,7 +7,7 @@ import { useAuth } from "../../store/auth";
 const ShareQuiz = ({setShareModalOpen , shareQuizId}) => {
   const { setModalOpen} = useAuth();
 
-  const url = `http://localhost:3000/playquiz/${shareQuizId}`;
+  const url = `https://quizzie-frontend.vercel.app/playquiz/${shareQuizId}`;
 
   const handleClick = () => {
     handleShareClick(shareQuizId)

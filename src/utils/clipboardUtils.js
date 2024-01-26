@@ -3,7 +3,7 @@ import toast from "react-hot-toast";
 
 const handleShareClick = (shareQuizId) => {
   
-  const url = `http://localhost:3000/playquiz/${shareQuizId}`;
+  const url = `https://quizzie-frontend.vercel.app/playquiz/${shareQuizId}`;
     navigator.clipboard
       .writeText(url)
       .then(() => {
