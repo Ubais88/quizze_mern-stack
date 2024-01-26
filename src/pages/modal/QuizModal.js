@@ -18,6 +18,7 @@ const QuizModal = () => {
     LogoutUser,
     quizData,
     quizInfo,
+    setCreateQuiz,
   } = useAuth();
 
   const defaultQuestion = {
@@ -187,7 +188,7 @@ const QuizModal = () => {
       )
     );
   };
-  console.log("question: " , questions)
+  console.log("question: ", questions);
   const handleCreateQuiz = async () => {
     // Prepare the final quiz data
     const quizData = createQuizData(
@@ -392,7 +393,10 @@ const QuizModal = () => {
           <div className={styles.buttonsContainer}>
             <button
               className={styles.cancelButton}
-              onClick={() => setModalOpen(false)}
+              onClick={() => {
+                setModalOpen(false);
+                setCreateQuiz(true);
+              }}
             >
               Cancel
             </button>
