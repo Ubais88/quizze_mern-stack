@@ -1,11 +1,9 @@
 import { createContext, useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const navigate = useNavigate()
   const [token, setToken] = useState(localStorage.getItem("token") || "");
   const [modalOpen, setModalOpen] = useState(false);
   const [createQuiz, setCreateQuiz] = useState(true);
@@ -26,18 +24,15 @@ export const AuthProvider = ({ children }) => {
   // logout - remove token from local storage
   const LogoutUser = () => {
     setToken("");
-    localStorage.removeItem("token");
-    navigate('/')
-    return
+    return localStorage.removeItem("token");
   };
 
-  if(!token){
-    navigate('/')
-  }
-
+  const isLoggedIn = !!token;
+  //console.log("isloggedin", isLoggedIn);
   return (
     <AuthContext.Provider
       value={{
+        isLoggedIn,
         storeTokenInLS,
         modalOpen,
         setModalOpen,
