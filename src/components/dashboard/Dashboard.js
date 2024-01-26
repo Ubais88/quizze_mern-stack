@@ -4,10 +4,9 @@ import EyeIcon from "../../assets/eye.png";
 import { useAuth } from "../../store/auth";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
-  const { authorizationToken, BASE_URL } = useAuth();
+  const { authorizationToken, LogoutUser, BASE_URL } = useAuth();
   const [quizStats, setQuizStats] = useState();
   const [loading, setLoading] = useState(true);
 
@@ -19,7 +18,7 @@ const Dashboard = () => {
         },
       });
 
-      //console.log("getstats response: ", response);
+      console.log("getstats response: ", response);
 
       if (response.status === 200) {
         // Successful getstats
@@ -29,11 +28,15 @@ const Dashboard = () => {
         // Failed getstats
         const message = response.data.message;
         toast.error(message);
-        //console.log("Invalid credential");
+        console.log("Invalid credential");
       }
     } catch (error) {
       // Log any errors
       console.error("stats  error:", error);
+      // if the error is due to unauthorized access (status code 401)
+      if (error.response && error.response.status === 401) {
+        LogoutUser(); // Log out the user
+      }
       toast.error(error.response?.data?.message || "Something went wrong", {
         position: "top-right",
       });
@@ -78,7 +81,11 @@ const Dashboard = () => {
                 quizStats.trendingQuizzes.map((quiz, index) => (
                   <div key={index} className={styles.trendingBox}>
                     <div className={styles.quizInfo}>
-                      <h3 className={styles.quizName}>{ quiz.quizName.length > 8 ? `${quiz.quizName.slice(0, 6)}..` : quiz.quizName }</h3>
+                      <h3 className={styles.quizName}>
+                        {quiz.quizName.length > 8
+                          ? `${quiz.quizName.slice(0, 6)}..`
+                          : quiz.quizName}
+                      </h3>
                       <p className={styles.impressionCount}>
                         {quiz.impressions}
                         <img src={EyeIcon} alt="impression" />

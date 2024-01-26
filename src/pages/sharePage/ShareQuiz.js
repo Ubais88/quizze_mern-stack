@@ -3,7 +3,7 @@ import styles from "./ShareQuiz.module.css";
 import { RxCross2 } from "react-icons/rx";
 import handleShareClick from "../../utils/clipboardUtils";
 import { useAuth } from "../../store/auth";
-
+ 
 const ShareQuiz = ({setShareModalOpen , shareQuizId}) => {
   const { setModalOpen} = useAuth();
 

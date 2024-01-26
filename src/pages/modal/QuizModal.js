@@ -46,7 +46,6 @@ const QuizModal = () => {
     (quizData && quizData.questions) || [defaultQuestion]
   );
 
-
   const handleTimeClick = (time) => {
     setSelectedTime(time);
     questions.length > 1 &&
@@ -57,7 +56,6 @@ const QuizModal = () => {
 
   const handleCountClick = (index) => {
     setSelectedCount(index);
-   
   };
 
   const handleOptionTypeChange = (type) => {
@@ -94,8 +92,6 @@ const QuizModal = () => {
           .filter((question) => question.id !== index + 1)
           .map((question, newIndex) => ({ ...question, id: newIndex + 1 }))
       );
-
-     
     }
   };
 
@@ -149,7 +145,6 @@ const QuizModal = () => {
           : question
       )
     );
-    
   };
 
   const handleAddOption = (e, questionIndex) => {
@@ -197,6 +192,7 @@ const QuizModal = () => {
     const quizData = createQuizData(
       quizInfo,
       selectedTime,
+      LogoutUser,
       questions,
       optionType
     );
@@ -233,6 +229,10 @@ const QuizModal = () => {
       } catch (error) {
         // Log any errors
         console.error("Create quiz error:", error);
+        // if the error is due to unauthorized access (status code 401)
+        if (error.response && error.response.status === 401) {
+          LogoutUser(); // Log out the user
+        }
         toast.error(error.response?.data?.message || "Something went wrong");
       }
     }
@@ -315,7 +315,7 @@ const QuizModal = () => {
                       }
                     />
                   )}
-                
+
                   <input
                     type="text"
                     placeholder={optionType.split(" ")[0]}
@@ -328,7 +328,7 @@ const QuizModal = () => {
                         selectedCount,
                         optionIndex,
                         e.target.value,
-                        false 
+                        false
                       )
                     }
                   />

@@ -11,7 +11,16 @@ import toast from "react-hot-toast";
 import handleShareClick from "../../utils/clipboardUtils";
 
 const Analytics = () => {
-  const { authorizationToken, BASE_URL ,setModalOpen ,setQuizData,setQuizInfo, setUpdateQuizId, setCreateQuiz } = useAuth();
+  const {
+    authorizationToken,
+    BASE_URL,
+    setModalOpen,
+    setQuizData,
+    setQuizInfo,
+    LogoutUser,
+    setUpdateQuizId,
+    setCreateQuiz,
+  } = useAuth();
   const navigate = useNavigate();
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -41,6 +50,10 @@ const Analytics = () => {
     } catch (error) {
       // Log any errors
       console.error("stats  error:", error);
+      // if the error is due to unauthorized access (status code 401)
+      if (error.response && error.response.status === 401) {
+        LogoutUser(); // Log out the user
+      }
       toast.error(error.response?.data?.message || "Something went wrong", {
         position: "top-right",
       });
@@ -60,43 +73,44 @@ const Analytics = () => {
     navigate(`/questionsanalytics/${quizId}`);
   };
 
-  const editHandler = async(quizId) => {
-      try {
-        const response = await axios.get(
-          `${BASE_URL}/quiz/getquiz/${quizId}`,
-          {
-            headers: {
-              Authorization: authorizationToken,
-            },
-          }
-        );
-  
-        //console.log("getquiz response: ", response);
-  
-        if (response.status === 200) {
-          // Successful getstats
-          setQuizInfo({
-            quizName: response.data.quiz.quizName,
-            quizType: response.data.quiz.quizType,
-          })
-          setQuizData(response.data.quiz);
-          //console.log("quizData response:", response.data);
-        } else {
-          // Failed getstats
-          const message = response.data.message;
-          toast.error(message);
-          //console.log("Invalid credential");
-        }
-      } catch (error) {
-        // Log any errors
-        console.error("stats  error:", error);
-        toast.error("Something went wrong");
-      }
+  const editHandler = async (quizId) => {
+    try {
+      const response = await axios.get(`${BASE_URL}/quiz/getquiz/${quizId}`, {
+        headers: {
+          Authorization: authorizationToken,
+        },
+      });
 
-    setUpdateQuizId(quizId)
+      //console.log("getquiz response: ", response);
+
+      if (response.status === 200) {
+        // Successful getstats
+        setQuizInfo({
+          quizName: response.data.quiz.quizName,
+          quizType: response.data.quiz.quizType,
+        });
+        setQuizData(response.data.quiz);
+        //console.log("quizData response:", response.data);
+      } else {
+        // Failed getstats
+        const message = response.data.message;
+        toast.error(message);
+        //console.log("Invalid credential");
+      }
+    } catch (error) {
+      // Log any errors
+      console.error("stats  error:", error);
+      // if the error is due to unauthorized access (status code 401)
+      if (error.response && error.response.status === 401) {
+        LogoutUser(); // Log out the user
+      }
+      toast.error("Something went wrong");
+    }
+
+    setUpdateQuizId(quizId);
     setModalOpen(true);
     setCreateQuiz(false);
-  }
+  };
 
   useEffect(() => {
     fetchAnalysisData();

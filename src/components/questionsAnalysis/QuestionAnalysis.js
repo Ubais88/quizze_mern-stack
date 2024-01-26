@@ -8,7 +8,7 @@ import { useParams } from "react-router-dom";
 const QuestionAnalysis = () => {
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
-  const { authorizationToken, BASE_URL } = useAuth();
+  const { authorizationToken, LogoutUser, BASE_URL } = useAuth();
   const [quizAnalysis, setQuizAnalysis] = useState();
 
   const fetchAnalysisData = async () => {
@@ -34,6 +34,10 @@ const QuestionAnalysis = () => {
     } catch (error) {
       // Log any errors
       console.error("stats  error:", error);
+      // if the error is due to unauthorized access (status code 401)
+      if (error.response && error.response.status === 401) {
+        LogoutUser(); // Log out the user
+      }
       toast.error(error.response?.data?.message || "Something went wrong", {
         position: "top-right",
       });
@@ -50,7 +54,9 @@ const QuestionAnalysis = () => {
       ) : (
         <>
           <div className={styles.quizInfo}>
-            <p className={styles.quizTitle}>{quizAnalysis.quizName} Question Analysis</p>
+            <p className={styles.quizTitle}>
+              {quizAnalysis.quizName} Question Analysis
+            </p>
             <div className={styles.quizDetails}>
               <span className={styles.createdOn}>
                 Created on: {quizAnalysis.createdOn}
