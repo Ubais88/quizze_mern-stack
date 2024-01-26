@@ -28,29 +28,24 @@ const QuizModal = () => {
     ],
   };
 
-  console.log("quizData in modal", quizData);
   const [circleCount, setCircleCount] = useState(
     (quizData && quizData.questions.length) || 1
   );
-  console.log("circleCount", circleCount);
   const [selectedTime, setSelectedTime] = useState(
     (quizData && quizData.timeLimit) || 0
   );
 
   const [selectedCount, setSelectedCount] = useState(0);
-  console.log("selectedCount:", selectedCount);
   const [optionType, setOptionType] = useState(
     (quizData && quizData.questions[0].options[0].type) || "text"
   );
   const [shareModalOpen, setShareModalOpen] = useState(false);
   const [shareQuizId, setShareQuizId] = useState("");
-  // console.log(quizData.questions)
 
   const [questions, setQuestions] = useState(
     (quizData && quizData.questions) || [defaultQuestion]
   );
 
-  console.log("qustions: ", questions);
 
   const handleTimeClick = (time) => {
     setSelectedTime(time);
@@ -62,8 +57,7 @@ const QuizModal = () => {
 
   const handleCountClick = (index) => {
     setSelectedCount(index);
-    // console.log("selectedOptions[index]", selectedOptions[index]);
-    // setSelectedOption(selectedOptions[index]);
+   
   };
 
   const handleOptionTypeChange = (type) => {
@@ -76,7 +70,6 @@ const QuizModal = () => {
     if (circleCount < 5) {
       setCircleCount((prevCount) => prevCount + 1);
       setSelectedCount(circleCount);
-      // setSelectedOption(selectedOptions[circleCount]);
       setQuestions((prevQuestions) => [
         ...prevQuestions,
         {
@@ -102,12 +95,7 @@ const QuizModal = () => {
           .map((question, newIndex) => ({ ...question, id: newIndex + 1 }))
       );
 
-      // Update selectedOptions to remove the entry for the removed question
-      //   setSelectedOptions((prevSelectedOptions) => {
-      //     const updatedOptions = [...prevSelectedOptions];
-      //     updatedOptions.splice(index, 1);
-      //     return updatedOptions;
-      //   });
+     
     }
   };
 
@@ -127,7 +115,6 @@ const QuizModal = () => {
     text,
     isImageUrl = false
   ) => {
-    console.log("optionType",optionType)
     setQuestions((prevQuestions) =>
       prevQuestions.map((question, qIndex) =>
         qIndex === questionIndex
@@ -148,7 +135,6 @@ const QuizModal = () => {
   };
 
   const handleCorrectOptionChange = (questionIndex, optionIndex) => {
-    // setSelectedOption(optionIndex);
     setQuestions((prevQuestions) =>
       prevQuestions.map((question, qIndex) =>
         qIndex === questionIndex
@@ -163,12 +149,7 @@ const QuizModal = () => {
           : question
       )
     );
-    // // Update selectedOptions with the correct option index
-    // setSelectedOptions((prevSelectedOptions) => {
-    //   const updatedOptions = [...prevSelectedOptions];
-    //   updatedOptions[questionIndex] = optionIndex;
-    //   return updatedOptions;
-    // });
+    
   };
 
   const handleAddOption = (e, questionIndex) => {
@@ -220,7 +201,7 @@ const QuizModal = () => {
       optionType
     );
     if (quizData) {
-      console.log("quizData", quizData);
+      //console.log("quizData", quizData);
       try {
         const method = updateQuizId ? "PUT" : "POST";
         // Construct the URL based on the method and pathPrefix
@@ -237,7 +218,6 @@ const QuizModal = () => {
           },
         });
 
-        console.log("response.data", response.data);
         if (response.status === 201 || response.status === 200) {
           const quizId = response.data.quizId;
           setShareQuizId(quizId);
@@ -248,7 +228,7 @@ const QuizModal = () => {
         } else {
           const message = response.data.message;
           toast.error(message);
-          console.log("Failed to create quiz");
+          //console.log("Failed to create quiz");
         }
       } catch (error) {
         // Log any errors

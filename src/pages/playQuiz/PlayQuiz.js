@@ -25,7 +25,6 @@ const PlayQuiz = () => {
       const response = await axios.get(`${BASE_URL}/quiz/play/${id}`);
 
       if (response.status === 200) {
-        console.log("response.data.savedQuiz", response.data.savedQuiz);
         setQuestions(response.data.savedQuiz.questions);
         setTimeLimit(response.data.savedQuiz.timeLimit);
         setQuizType(response.data.savedQuiz.quizType);
@@ -74,7 +73,7 @@ const PlayQuiz = () => {
     setSelectedOption(index);
   };
 
-  console.log("userResponse:", userResponses);
+  //console.log("userResponse:", userResponses);
 
   const handleNextQuestion = () => {
     if (currentQuestionIndex + 1 === questions.length) {
@@ -128,7 +127,7 @@ const PlayQuiz = () => {
   return (
     <div className={styles.playQuizContainer}>
       {loading ? (
-        <div class="spinner"></div>
+        <div className="spinner"></div>
       ) : (
         <div className={styles.playQuizModal}>
           <div className={styles.quizHeader}>

@@ -5,10 +5,14 @@ import Createquiz from "../createQuiz/Createquiz";
 import { useAuth } from "../../store/auth";
 
 const Sidebar = () => {
-  const { LogoutUser , modalOpen , setModalOpen} = useAuth();
+
+  const { LogoutUser , isLoggedIn , modalOpen , setModalOpen} = useAuth();
+
   const navigate = useNavigate()
   const [selectedMenuItem, setSelectedMenuItem] = useState("dashboard");
-  
+  if(!isLoggedIn){
+    navigate('/')
+  }
 
   const handleMenuItemClick = (e) => {
     const menuItem = e.target.id; 

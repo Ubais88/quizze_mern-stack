@@ -59,7 +59,7 @@ const { storeTokenInLS, BASE_URL } = useAuth();
           }
         );
 
-        console.log("Login response:", response);
+        //console.log("Login response:", response);
 
         if (response.status === 200) {
           // Successful login
@@ -73,7 +73,7 @@ const { storeTokenInLS, BASE_URL } = useAuth();
           // Failed login
           const res_data = response.data; // Access the response data directly
           toast.error(res_data.message);
-          console.log("Invalid credential");
+          //console.log("Invalid credential");
         }
       } catch (error) {
         // Log any errors

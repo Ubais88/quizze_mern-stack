@@ -6,7 +6,6 @@ const Congrats = ({
   quizType,
   totalQuestions,
   correctAnswers,
-  incorrectAnswers,
 }) => {
   return (
     <div className={styles.congratsContainer}>

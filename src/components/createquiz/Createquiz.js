@@ -7,12 +7,8 @@ import { useAuth } from "../../store/auth";
 const Createquiz = () => {
   const { setModalOpen , createQuiz, setCreateQuiz  ,quizInfo , setQuizInfo } = useAuth();
   const [selectedQuizType, setSelectedQuizType] = useState("");
-  // const [quizInfo, setQuizInfo] = useState({
-  //   quizName: "",
-  //   quizType: "",
-  // });
+  
   const [errors, setErrors] = useState({});
-  // const [createQuiz, setCreateQuiz] = useState(true);
 
   const changeHandler = (e) => {
     setErrors({});

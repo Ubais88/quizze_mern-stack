@@ -19,7 +19,7 @@ const QuestionAnalysis = () => {
         },
       });
 
-      console.log("question wise analysis response: ", response);
+      //console.log("question wise analysis response: ", response);
 
       if (response.status === 200) {
         // Successful fetch analysis data
@@ -29,7 +29,7 @@ const QuestionAnalysis = () => {
         // Failed analysis
         const message = response.data.message;
         toast.error(message);
-        console.log("Invalid credential");
+        //console.log("Invalid credential");
       }
     } catch (error) {
       // Log any errors
@@ -43,15 +43,14 @@ const QuestionAnalysis = () => {
   useEffect(() => {
     fetchAnalysisData();
   }, []);
-  // console.log("question.options", quizAnalysis.questions[0].options)
   return (
     <div className={styles.questionAnalysisContainer}>
       {loading ? (
-        <div class="spinner"></div>
+        <div className="spinner"></div>
       ) : (
         <>
           <div className={styles.quizInfo}>
-            <p className={styles.quizTitle}>Quiz 2 Question Analysis</p>
+            <p className={styles.quizTitle}>{quizAnalysis.quizName} Question Analysis</p>
             <div className={styles.quizDetails}>
               <span className={styles.createdOn}>
                 Created on: {quizAnalysis.createdOn}

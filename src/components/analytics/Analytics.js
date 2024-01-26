@@ -26,7 +26,7 @@ const Analytics = () => {
         },
       });
 
-      console.log("analysis response: ", response);
+      //console.log("analysis response: ", response);
 
       if (response.status === 200) {
         // Successful fetch analysis data
@@ -36,7 +36,7 @@ const Analytics = () => {
         // Failed analysis
         const message = response.data.message;
         toast.error(message);
-        console.log("Invalid credential");
+        //console.log("Invalid credential");
       }
     } catch (error) {
       // Log any errors
@@ -71,7 +71,7 @@ const Analytics = () => {
           }
         );
   
-        console.log("getquiz response: ", response);
+        //console.log("getquiz response: ", response);
   
         if (response.status === 200) {
           // Successful getstats
@@ -80,12 +80,12 @@ const Analytics = () => {
             quizType: response.data.quiz.quizType,
           })
           setQuizData(response.data.quiz);
-          console.log("quizData response:", response.data);
+          //console.log("quizData response:", response.data);
         } else {
           // Failed getstats
           const message = response.data.message;
           toast.error(message);
-          console.log("Invalid credential");
+          //console.log("Invalid credential");
         }
       } catch (error) {
         // Log any errors
@@ -105,7 +105,7 @@ const Analytics = () => {
   return (
     <div className={styles.quizAnalyticsPage}>
       {loading ? (
-        <div class="spinner"></div>
+        <div className="spinner"></div>
       ) : (
         <>
           <h2 className={styles.analyticsTitle}>Quiz Analytics</h2>

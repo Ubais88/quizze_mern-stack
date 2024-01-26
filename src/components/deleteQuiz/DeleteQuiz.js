@@ -14,7 +14,7 @@ const DeleteQuiz = ({ setDeleteModalOpen , deleteQuiz , setDeleteQuiz }) => {
           },
         });
   
-        console.log("delete response: ", response);
+        //console.log("delete response: ", response);
   
         if (response.status === 200) {
           // Successful deleted data
@@ -26,7 +26,7 @@ const DeleteQuiz = ({ setDeleteModalOpen , deleteQuiz , setDeleteQuiz }) => {
           const message = response.data.message;
           toast.error(message);
           setDeleteModalOpen(false)
-          console.log("Invalid credential");
+          //console.log("Invalid credential");
         }
       } catch (error) {
         // Log any errors

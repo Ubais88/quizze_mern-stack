@@ -20,7 +20,7 @@ const SignupForm = ({setLoginFormActive}) => {
       ...signupFormData,
       [name]: value,
     });
-    console.log(signupFormData);
+    //console.log(signupFormData);
     setErrors({});
   };
 
@@ -71,7 +71,7 @@ const SignupForm = ({setLoginFormActive}) => {
           }
         );
 
-        console.log("signup response:", response);
+        //console.log("signup response:", response);
 
         if (response.status === 200) {
           // Successful login
@@ -89,7 +89,7 @@ const SignupForm = ({setLoginFormActive}) => {
           // Failed login
           const res_data = response.data; // Access the response data directly
           toast.error(res_data.message);
-          console.log("Invalid credential");
+          //console.log("Invalid credential");
         }
       } catch (error) {
         // Log any errors

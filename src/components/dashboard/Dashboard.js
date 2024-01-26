@@ -8,7 +8,6 @@ import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
   const { authorizationToken, BASE_URL } = useAuth();
-  const navigate = useNavigate();
   const [quizStats, setQuizStats] = useState();
   const [loading, setLoading] = useState(true);
 
@@ -20,7 +19,7 @@ const Dashboard = () => {
         },
       });
 
-      // console.log("getstats response: ", response);
+      //console.log("getstats response: ", response);
 
       if (response.status === 200) {
         // Successful getstats
@@ -30,7 +29,7 @@ const Dashboard = () => {
         // Failed getstats
         const message = response.data.message;
         toast.error(message);
-        console.log("Invalid credential");
+        //console.log("Invalid credential");
       }
     } catch (error) {
       // Log any errors
@@ -48,7 +47,7 @@ const Dashboard = () => {
   return (
     <div className={styles.dashboardContainer}>
       {loading ? (
-        <div class="spinner"></div>
+        <div className="spinner"></div>
       ) : (
         <>
           <div className={styles.boxes}>
