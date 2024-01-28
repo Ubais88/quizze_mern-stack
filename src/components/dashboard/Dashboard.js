@@ -18,7 +18,7 @@ const Dashboard = () => {
         },
       });
 
-      console.log("getstats response: ", response);
+      // console.log("getstats response: ", response);
 
       if (response.status === 200) {
         // Successful getstats

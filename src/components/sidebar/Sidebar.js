@@ -36,7 +36,7 @@ const logoutClickHandler = () => {
     <div>
     <div className={styles.sidebarContainer}>
       <div className={styles.logoContainer}>
-        <h1 className={styles.logoText}>QUIZZIE</h1>
+        <h1 className={styles.logoText} onClick={() => navigate('/dashboard')}>QUIZZIE</h1>
       </div>
 
       <div className={styles.menuItems}>
