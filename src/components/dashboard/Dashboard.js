@@ -99,7 +99,7 @@ const Dashboard = () => {
                   </div>
                 ))
               ) : (
-                <h1>No Quiz Found </h1>
+                <h1 className={styles.noQuiz}>No Quiz Found </h1>
               )}
             </div>
           </div>

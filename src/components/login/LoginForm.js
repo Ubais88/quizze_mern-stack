@@ -63,6 +63,7 @@ const { storeTokenInLS, BASE_URL } = useAuth();
 
         if (response.status === 200) {
           // Successful login
+          // console.log(response)
           storeTokenInLS(response.data.token);
           setLoginFormData({ email: "", password: "" });
           toast.success("Login successful",{

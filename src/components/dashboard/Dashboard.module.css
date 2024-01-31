@@ -1,4 +1,5 @@
 .dashboardContainer {
+  font-family: Poppins;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -29,7 +30,6 @@
 }
 
 .boxTitle {
-  font-family: Poppins;
   font-size: 3.3rem;
   font-weight: 600;
   margin: 0;
@@ -37,7 +37,6 @@
 }
 
 .boxSubtitle {
-  font-family: Poppins;
   font-size: 1.7rem;
   font-weight: 600;
   margin: 0;
@@ -60,7 +59,6 @@
 }
 
 .trendingTitle {
-  font-family: Poppins;
   font-size: 2rem;
   font-weight: 600;
   margin: 0;
@@ -94,7 +92,6 @@
   width: 100%;
 }
 .quizName {
-  font-family: Poppins;
   font-size: 1.4rem;
   font-weight: 600;
   color: #474444;
@@ -106,22 +103,26 @@
   align-items: center;
   justify-content: center;
   gap: 0.2rem;
-  font-family: Poppins;
   font-size: 0.9rem;
   font-weight: 600;
   color: #ff5d01;
   margin: 0;
 }
 
-.quizDateInfo{
-    display: flex;
-    justify-content: flex-start;
-    width: 100%;
+.quizDateInfo {
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
 }
 
 .quizDate {
-  font-family: Poppins;
   font-size: 0.68rem;
   font-weight: 600;
   color: #60b84b;
+}
+
+.noQuiz {
+  color:#ff5d01;
+  width: 20vw;
+  margin: 0;
 }

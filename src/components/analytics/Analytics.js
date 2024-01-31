@@ -35,7 +35,7 @@ const Analytics = () => {
         },
       });
 
-      //console.log("analysis response: ", response);
+      // console.log("analysis response: ", response);
 
       if (response.status === 200) {
         // Successful fetch analysis data
@@ -45,18 +45,21 @@ const Analytics = () => {
         // Failed analysis
         const message = response.data.message;
         toast.error(message);
-        //console.log("Invalid credential");
+        // console.log("Invalid credential");
       }
     } catch (error) {
       // Log any errors
-      console.error("stats  error:", error);
+      setLoading(false)
+      // console.error("stats  error:", error);
       // if the error is due to unauthorized access (status code 401)
       if (error.response && error.response.status === 401) {
         LogoutUser(); // Log out the user
       }
-      toast.error(error.response?.data?.message || "Something went wrong", {
-        position: "top-right",
-      });
+      if (error.response && error.response.status === 400) {
+        setQuizAnalysis([]);
+        return
+      }
+      toast.error(error.response?.data?.message || "Something went wrong");
     }
   };
 
@@ -124,7 +127,7 @@ const Analytics = () => {
         <>
           <h2 className={styles.analyticsTitle}>Quiz Analytics</h2>
           <div className={styles.quizTableContainer}>
-            {quizAnalysis.length > 0 && (
+            {quizAnalysis.length > 0 ? (
               <table className={styles.quizTable}>
                 <thead className={styles.headerContainer}>
                   <tr>
@@ -197,7 +200,9 @@ const Analytics = () => {
                   ))}
                 </tbody>
               </table>
-            )}
+            )
+            : ( <h1 className={styles.noQuiz}>No Quiz Found</h1> )
+            }
           </div>
         </>
       )}
