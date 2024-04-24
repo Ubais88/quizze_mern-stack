@@ -73,7 +73,7 @@ const PlayQuiz = () => {
     setSelectedOption(index);
   };
 
-  //console.log("userResponse:", userResponses);
+  console.log("userResponse:", userResponses);
 
   const handleNextQuestion = () => {
     if (currentQuestionIndex + 1 === questions.length) {

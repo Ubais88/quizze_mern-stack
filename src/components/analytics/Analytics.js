@@ -56,7 +56,7 @@ const Analytics = () => {
         LogoutUser(); // Log out the user
       }
       if (error.response && error.response.status === 400) {
-        setQuizAnalysis([]);
+        setQuizAnalysis([]); 
         return
       }
       toast.error(error.response?.data?.message || "Something went wrong");
